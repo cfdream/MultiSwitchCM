@@ -1,0 +1,1 @@
+shrink_ratio: 0.1

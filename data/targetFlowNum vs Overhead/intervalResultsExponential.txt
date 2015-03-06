@@ -1,0 +1,76 @@
+replace:1 memeorysize:20604 targetVolume:20000.0 targetLossRate:0.02
+numTargetFlows:502 avgFalseNegative:0.07300299478349187 avgAccuracy:0.7960307003702545 totalTargetFlowCapturedAtAllSwitches:1570 networkOverheadFromH2:5052 
+replace:1 memeorysize:20604 targetVolume:20000.0 targetLossRate:0.02
+numTargetFlows:551 avgFalseNegative:0.06451826699303717 avgAccuracy:0.810964167796931 totalTargetFlowCapturedAtAllSwitches:1750 networkOverheadFromH2:6140 
+replace:1 memeorysize:20604 targetVolume:20000.0 targetLossRate:0.02
+numTargetFlows:414 avgFalseNegative:0.05262038660878518 avgAccuracy:0.7960423434732797 totalTargetFlowCapturedAtAllSwitches:1334 networkOverheadFromH2:4089 
+replace:1 memeorysize:20604 targetVolume:20000.0 targetLossRate:0.02
+numTargetFlows:369 avgFalseNegative:0.0744232759207494 avgAccuracy:0.8216164886713547 totalTargetFlowCapturedAtAllSwitches:1161 networkOverheadFromH2:3987 
+replace:1 memeorysize:20604 targetVolume:20000.0 targetLossRate:0.02
+numTargetFlows:439 avgFalseNegative:0.06260736590335711 avgAccuracy:0.8132979843366414 totalTargetFlowCapturedAtAllSwitches:1395 networkOverheadFromH2:4407 
+replace:1 memeorysize:20604 targetVolume:20000.0 targetLossRate:0.02
+numTargetFlows:466 avgFalseNegative:0.06125867529631149 avgAccuracy:0.8178161901150669 totalTargetFlowCapturedAtAllSwitches:1507 networkOverheadFromH2:4663 
+replace:1 memeorysize:20604 targetVolume:20000.0 targetLossRate:0.02
+numTargetFlows:338 avgFalseNegative:0.07374020198313219 avgAccuracy:0.8086215890561511 totalTargetFlowCapturedAtAllSwitches:1067 networkOverheadFromH2:3279 
+replace:1 memeorysize:20604 targetVolume:20000.0 targetLossRate:0.01
+numTargetFlows:949 avgFalseNegative:0.04608133571012393 avgAccuracy:0.8207943204965064 totalTargetFlowCapturedAtAllSwitches:3172 networkOverheadFromH2:9407 
+replace:1 memeorysize:20604 targetVolume:20000.0 targetLossRate:0.01
+numTargetFlows:806 avgFalseNegative:0.04833992248960256 avgAccuracy:0.8211811808614186 totalTargetFlowCapturedAtAllSwitches:2721 networkOverheadFromH2:8200 
+replace:1 memeorysize:20604 targetVolume:20000.0 targetLossRate:0.01
+numTargetFlows:911 avgFalseNegative:0.04239195836805096 avgAccuracy:0.8343130881883716 totalTargetFlowCapturedAtAllSwitches:3024 networkOverheadFromH2:7618 
+replace:1 memeorysize:20604 targetVolume:20000.0 targetLossRate:0.01
+numTargetFlows:857 avgFalseNegative:0.05443929844357842 avgAccuracy:0.8238677199255047 totalTargetFlowCapturedAtAllSwitches:2860 networkOverheadFromH2:8262 
+replace:1 memeorysize:20604 targetVolume:20000.0 targetLossRate:0.01
+numTargetFlows:745 avgFalseNegative:0.05411857642884682 avgAccuracy:0.8158632940302151 totalTargetFlowCapturedAtAllSwitches:2448 networkOverheadFromH2:6933 
+replace:1 memeorysize:20604 targetVolume:20000.0 targetLossRate:0.01
+numTargetFlows:823 avgFalseNegative:0.053744839380984705 avgAccuracy:0.8284671483254572 totalTargetFlowCapturedAtAllSwitches:2755 networkOverheadFromH2:8209 
+replace:1 memeorysize:20604 targetVolume:20000.0 targetLossRate:0.01
+numTargetFlows:876 avgFalseNegative:0.05986549398906274 avgAccuracy:0.8228679029164441 totalTargetFlowCapturedAtAllSwitches:2891 networkOverheadFromH2:7545 
+replace:1 memeorysize:27472 targetVolume:15000.0 targetLossRate:0.01
+numTargetFlows:1124 avgFalseNegative:0.04693305749766574 avgAccuracy:0.8431030868399976 totalTargetFlowCapturedAtAllSwitches:3752 networkOverheadFromH2:11212 
+replace:1 memeorysize:27472 targetVolume:15000.0 targetLossRate:0.01
+numTargetFlows:1153 avgFalseNegative:0.030356463000597883 avgAccuracy:0.8501170934579247 totalTargetFlowCapturedAtAllSwitches:3878 networkOverheadFromH2:12626 
+replace:1 memeorysize:27472 targetVolume:15000.0 targetLossRate:0.01
+numTargetFlows:1137 avgFalseNegative:0.039889531684463186 avgAccuracy:0.83894943193076 totalTargetFlowCapturedAtAllSwitches:3879 networkOverheadFromH2:10158 
+replace:1 memeorysize:27472 targetVolume:15000.0 targetLossRate:0.01
+numTargetFlows:1179 avgFalseNegative:0.046525818135308344 avgAccuracy:0.8367589885786615 totalTargetFlowCapturedAtAllSwitches:3896 networkOverheadFromH2:10635 
+replace:1 memeorysize:27472 targetVolume:15000.0 targetLossRate:0.01
+numTargetFlows:1230 avgFalseNegative:0.03958731311448424 avgAccuracy:0.8510166984707381 totalTargetFlowCapturedAtAllSwitches:4110 networkOverheadFromH2:11373 
+replace:1 memeorysize:27472 targetVolume:15000.0 targetLossRate:0.01
+numTargetFlows:1103 avgFalseNegative:0.04181715058618826 avgAccuracy:0.8305461790156091 totalTargetFlowCapturedAtAllSwitches:3776 networkOverheadFromH2:10272 
+replace:1 memeorysize:27472 targetVolume:15000.0 targetLossRate:0.01
+numTargetFlows:1018 avgFalseNegative:0.032727468156704326 avgAccuracy:0.8469418420831553 totalTargetFlowCapturedAtAllSwitches:3377 networkOverheadFromH2:9867 
+replace:1 memeorysize:20604 targetVolume:20000.0 targetLossRate:0.015
+numTargetFlows:548 avgFalseNegative:0.05407363991634634 avgAccuracy:0.8089339789773676 totalTargetFlowCapturedAtAllSwitches:1802 networkOverheadFromH2:5703 
+replace:1 memeorysize:20604 targetVolume:20000.0 targetLossRate:0.015
+numTargetFlows:592 avgFalseNegative:0.05955657130194972 avgAccuracy:0.8280701769496123 totalTargetFlowCapturedAtAllSwitches:1954 networkOverheadFromH2:6142 
+replace:1 memeorysize:20604 targetVolume:20000.0 targetLossRate:0.015
+numTargetFlows:773 avgFalseNegative:0.0507283725835776 avgAccuracy:0.8302341579534027 totalTargetFlowCapturedAtAllSwitches:2526 networkOverheadFromH2:7457 
+replace:1 memeorysize:27472 targetVolume:15000.0 targetLossRate:0.015
+numTargetFlows:656 avgFalseNegative:0.06568164341984986 avgAccuracy:0.8235303566527846 totalTargetFlowCapturedAtAllSwitches:2111 networkOverheadFromH2:6134 
+replace:1 memeorysize:27472 targetVolume:15000.0 targetLossRate:0.015
+numTargetFlows:664 avgFalseNegative:0.04416381655227153 avgAccuracy:0.8313823569522599 totalTargetFlowCapturedAtAllSwitches:2220 networkOverheadFromH2:7021 
+replace:1 memeorysize:27472 targetVolume:15000.0 targetLossRate:0.015
+numTargetFlows:762 avgFalseNegative:0.04712763865313832 avgAccuracy:0.8347843321489189 totalTargetFlowCapturedAtAllSwitches:2554 networkOverheadFromH2:8266 
+replace:1 memeorysize:27472 targetVolume:15000.0 targetLossRate:0.015
+numTargetFlows:672 avgFalseNegative:0.058595686669654284 avgAccuracy:0.8184369729581391 totalTargetFlowCapturedAtAllSwitches:2162 networkOverheadFromH2:6514 
+replace:1 memeorysize:27472 targetVolume:15000.0 targetLossRate:0.015
+numTargetFlows:494 avgFalseNegative:0.04472074815755661 avgAccuracy:0.8256336769060761 totalTargetFlowCapturedAtAllSwitches:1649 networkOverheadFromH2:5659 
+replace:1 memeorysize:27472 targetVolume:15000.0 targetLossRate:0.015
+numTargetFlows:682 avgFalseNegative:0.04265620314477067 avgAccuracy:0.8445351774887251 totalTargetFlowCapturedAtAllSwitches:2276 networkOverheadFromH2:7045 
+replace:1 memeorysize:27472 targetVolume:15000.0 targetLossRate:0.015
+numTargetFlows:599 avgFalseNegative:0.04029714686847996 avgAccuracy:0.8346948583800742 totalTargetFlowCapturedAtAllSwitches:2022 networkOverheadFromH2:6428 
+replace:1 memeorysize:20604 targetVolume:20000.0 targetLossRate:0.025
+numTargetFlows:277 avgFalseNegative:0.0860302715983566 avgAccuracy:0.7843780758857372 totalTargetFlowCapturedAtAllSwitches:818 networkOverheadFromH2:3506 
+replace:1 memeorysize:20604 targetVolume:20000.0 targetLossRate:0.025
+numTargetFlows:288 avgFalseNegative:0.054837743670206524 avgAccuracy:0.7908571438947327 totalTargetFlowCapturedAtAllSwitches:894 networkOverheadFromH2:3104 
+replace:1 memeorysize:20604 targetVolume:20000.0 targetLossRate:0.025
+numTargetFlows:285 avgFalseNegative:0.04595650466046575 avgAccuracy:0.8061820223028611 totalTargetFlowCapturedAtAllSwitches:886 networkOverheadFromH2:2903 
+replace:1 memeorysize:20604 targetVolume:20000.0 targetLossRate:0.025
+numTargetFlows:314 avgFalseNegative:0.058503584707280676 avgAccuracy:0.8135130495267784 totalTargetFlowCapturedAtAllSwitches:984 networkOverheadFromH2:3895 
+replace:1 memeorysize:20604 targetVolume:20000.0 targetLossRate:0.025
+numTargetFlows:348 avgFalseNegative:0.06336435358264023 avgAccuracy:0.8093700932738013 totalTargetFlowCapturedAtAllSwitches:1060 networkOverheadFromH2:2983 
+replace:1 memeorysize:20604 targetVolume:20000.0 targetLossRate:0.025
+numTargetFlows:245 avgFalseNegative:0.05228387071639776 avgAccuracy:0.8039646947340031 totalTargetFlowCapturedAtAllSwitches:777 networkOverheadFromH2:2730 
+replace:1 memeorysize:20604 targetVolume:20000.0 targetLossRate:0.025
+numTargetFlows:296 avgFalseNegative:0.07645504675207648 avgAccuracy:0.791366370863785 totalTargetFlowCapturedAtAllSwitches:902 networkOverheadFromH2:3113 
