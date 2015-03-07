@@ -1,5 +1,7 @@
 package multi.controller;
 
+import multi.main.GlobalData;
+
 
 public class Controller implements Runnable {
 
@@ -24,8 +26,15 @@ public class Controller implements Runnable {
 			} else {
 				System.out.println("disorder, discard the result");
 			}
+			
+			if (GlobalData.Instance().AllIntervalsCompleted) {
+				break;
+			}
+			
 			ControllerDataInOneInterval.Instance().clear();
 		}
+		
+		System.out.println("Controller exit");
 	}
 
 	public void start()

@@ -11,7 +11,8 @@ public class Host1 implements Runnable {
 		Reader reader = new Reader();
 		reader.readTillIthIntervalPackets(
 				GlobalSetting.SIMULATE_INVERVALS,
-				GlobalData.S1InputQueue);
+				GlobalData.Instance().S1InputQueue,
+				"h1");
 	}
 
 	public void start()

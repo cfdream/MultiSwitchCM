@@ -23,14 +23,21 @@ public class GlobalData {
 	public ConcurrentHashMap<FlowKey, Integer> gTargetFlowMap = new ConcurrentHashMap<FlowKey, Integer>();
 	public ConcurrentHashMap<FlowKey, Integer> gTargetFlowMapEndOfInterval = new ConcurrentHashMap<FlowKey, Integer>();
 	
-	public static LinkedBlockingQueue<Packet> S1InputQueue= new LinkedBlockingQueue<Packet>(10000); // 10M
-	public static LinkedBlockingQueue<Packet> S2InputQueue = new LinkedBlockingQueue<Packet>(10000); // 10M
-	public static LinkedBlockingQueue<Packet> S3InputQueue = new LinkedBlockingQueue<Packet>(10000); // 10M
-	public static LinkedBlockingQueue<Packet> S4InputQueue = new LinkedBlockingQueue<Packet>(10000); // 10M
-	public static ConcurrentMap<Packet, Integer> H2InputSet = new ConcurrentHashMap<Packet, Integer>(); // 10M
-	public static LinkedBlockingQueue<Packet> H2TruthQueue = new LinkedBlockingQueue<Packet>(10000); // 10M
-	public static long currentMaxPktTimestamp;
+	public LinkedBlockingQueue<Packet> S1InputQueue= new LinkedBlockingQueue<Packet>(10000); // 10M
+	public LinkedBlockingQueue<Packet> S2InputQueue = new LinkedBlockingQueue<Packet>(10000); // 10M
+	public LinkedBlockingQueue<Packet> S3InputQueue = new LinkedBlockingQueue<Packet>(10000); // 10M
+	public LinkedBlockingQueue<Packet> S4InputQueue = new LinkedBlockingQueue<Packet>(10000); // 10M
+	public ConcurrentMap<Packet, Integer> H2InputSet = new ConcurrentHashMap<Packet, Integer>(); // 10M
+	public LinkedBlockingQueue<Packet> H2TruthQueue = new LinkedBlockingQueue<Packet>(10000); // 10M
+	public long currentMaxPktTimestamp;
 	
+	//signal for all threads.
+	public boolean AllIntervalsCompleted;
+	public boolean h1exit;
+	public boolean s1exit;
+	public boolean s2exit;
+	public boolean s3exit;
+	public boolean s4exit;
 	
 	private GlobalData() {
 		random = new Random(System.currentTimeMillis());
@@ -42,6 +49,13 @@ public class GlobalData {
 		gLostFlowMapBuffer.add(new ConcurrentHashMap<FlowKey, Long>());
 		//
 		gFlowMapBufferIdx = 0;
+		
+		AllIntervalsCompleted = false;
+		h1exit = false;
+		s1exit = false;
+		s2exit = false;
+		s3exit = false;
+		s4exit = false;
 	}
 	
 	public static GlobalData Instance() {

@@ -21,28 +21,28 @@ public class MainTask {
 		SwitchData s4Data = new SwitchData();
 		
 		ArrayList<LinkedBlockingQueue<Packet>> s1OutQueueList = new ArrayList<LinkedBlockingQueue<Packet>>();
-		s1OutQueueList.add(GlobalData.S2InputQueue);
-		s1OutQueueList.add(GlobalData.S3InputQueue);
+		s1OutQueueList.add(GlobalData.Instance().S2InputQueue);
+		s1OutQueueList.add(GlobalData.Instance().S3InputQueue);
 		s1Data.name = "s1";
-		s1Data.inputQueue = GlobalData.S1InputQueue;
+		s1Data.inputQueue = GlobalData.Instance().S1InputQueue;
 		s1Data.outputQueueS = s1OutQueueList;
 		
 		ArrayList<LinkedBlockingQueue<Packet>> s2OutQueueList = new ArrayList<LinkedBlockingQueue<Packet>>();
-		s2OutQueueList.add(GlobalData.S4InputQueue);
+		s2OutQueueList.add(GlobalData.Instance().S4InputQueue);
 		s2Data.name = "s2";
-		s2Data.inputQueue = GlobalData.S2InputQueue;
+		s2Data.inputQueue = GlobalData.Instance().S2InputQueue;
 		s2Data.outputQueueS = s2OutQueueList;
 		s2Data.switchDropPackets = true;			//only S2 drops packets
 		
 		ArrayList<LinkedBlockingQueue<Packet>> s3OutQueueList = new ArrayList<LinkedBlockingQueue<Packet>>();
-		s3OutQueueList.add(GlobalData.S4InputQueue);
+		s3OutQueueList.add(GlobalData.Instance().S4InputQueue);
 		s3Data.name = "s3";
-		s3Data.inputQueue = GlobalData.S3InputQueue;
+		s3Data.inputQueue = GlobalData.Instance().S3InputQueue;
 		s3Data.outputQueueS = s3OutQueueList;
 		
 		s4Data.name = "s4";
-		s4Data.inputQueue = GlobalData.S4InputQueue;
-		s4Data.H2InputSet = GlobalData.H2InputSet;
+		s4Data.inputQueue = GlobalData.Instance().S4InputQueue;
+		s4Data.H2InputSet = GlobalData.Instance().H2InputSet;
 		
 		/*4 switches*/
 		Switch switch1 = new Switch(s1Data);

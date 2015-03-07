@@ -180,8 +180,8 @@ public class Switch implements Runnable {
 				//switch 4
 				switchIntOutData.H2InputSet.put(pkg, 1);
 				//update currentMaxPktTimestamp, will be used in Host2MainThread
-				if (pkg.microsec > GlobalData.currentMaxPktTimestamp) {
-					GlobalData.currentMaxPktTimestamp = pkg.microsec;
+				if (pkg.microsec > GlobalData.Instance().currentMaxPktTimestamp) {
+					GlobalData.Instance().currentMaxPktTimestamp = pkg.microsec;
 				}
 			}
 		} catch (InterruptedException e) {
@@ -210,15 +210,22 @@ public class Switch implements Runnable {
 			while ((pkg = switchIntOutData.inputQueue.poll()) == null) {
 				try {
 					Thread.sleep(1);
+					if (canExit()) {
+						break;
+					}
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
+			if (canExit()) {
+				break;
+			}
 			
 			//handle the packet
 			handleOneIncomingPacket(pkg);
 		}
+		System.out.println(switchIntOutData.name + " exit");
 	}
 
 	public void start()
@@ -229,5 +236,32 @@ public class Switch implements Runnable {
 			thread = new Thread (this, switchIntOutData.name);
 			thread.start();
 		}
+	}
+	
+	public boolean canExit() {
+		if (!GlobalData.Instance().AllIntervalsCompleted) {
+			return false;
+		}
+		if (switchIntOutData.name == "s1" && GlobalData.Instance().h1exit) {
+			GlobalData.Instance().s1exit = true;
+			return true;
+		}
+		if (switchIntOutData.name == "s2" && GlobalData.Instance().s1exit) {
+			GlobalData.Instance().s2exit = true;
+			return true;
+		}
+		if (switchIntOutData.name == "s3" && GlobalData.Instance().s1exit) {
+			GlobalData.Instance().s3exit = true;
+			return true;
+		}
+		
+		if (switchIntOutData.name == "s4" 
+				&& GlobalData.Instance().s2exit 
+				&& GlobalData.Instance().s3exit) {
+			GlobalData.Instance().s4exit = true;
+			return true;			
+		}
+		
+		return false;
 	}
 }

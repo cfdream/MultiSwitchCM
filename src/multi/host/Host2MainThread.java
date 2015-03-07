@@ -22,14 +22,20 @@ public class Host2MainThread implements Runnable {
 		while (true) {
 			//get one Packet
 			Packet pkg = null;
-			while ((pkg = GlobalData.H2TruthQueue.poll()) == null) {
+			while ((pkg = GlobalData.Instance().H2TruthQueue.poll()) == null) {
 				try {
 					Thread.sleep(1);
+					if (canExit()) {
+						break;
+					}
 					//System.out.println("h2 wait for H2TruthQUeue");
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+			}
+			if (canExit()) {
+				break;
 			}
 			
 			//check interval
@@ -55,9 +61,9 @@ public class Host2MainThread implements Runnable {
 			int waitTimes = 0;
 			while (true) {
 				FlowKey flowKey = new FlowKey(pkg);
-				if (GlobalData.H2InputSet.containsKey(pkg)) {
+				if (GlobalData.Instance().H2InputSet.containsKey(pkg)) {
 					//remove the pkg from the set
-					GlobalData.H2InputSet.remove(pkg);
+					GlobalData.Instance().H2InputSet.remove(pkg);
 					//the pkg is already received
 					//update normal volume for the flow
 					GlobalData.Instance().insertIntoNormalFlowVolumeMap(flowKey, pkg);
@@ -73,12 +79,12 @@ public class Host2MainThread implements Runnable {
 					/*log*/
 					if (numReceivedPkts % 1000000 == 0) {
 						System.out.println("h2"+ " received " + numReceivedPkts + " packets " + 
-								", H2InputSet.size:" + GlobalData.H2InputSet.size());
+								", H2InputSet.size:" + GlobalData.Instance().H2InputSet.size());
 					}
 					break;
 				}
 				
-				if (GlobalData.currentMaxPktTimestamp - pkg.microsec > GlobalSetting.MAX_MINISECONDS_TO_WAIT_FOR_ONE_PKT) {
+				if (GlobalData.Instance().currentMaxPktTimestamp - pkg.microsec > GlobalSetting.MAX_MINISECONDS_TO_WAIT_FOR_ONE_PKT) {
 					//time out, pkg is lost
 					//update lost volume for the flow
 					GlobalData.Instance().insertIntoLostFlowVolumeMap(flowKey, pkg);
@@ -88,13 +94,16 @@ public class Host2MainThread implements Runnable {
 					numLostPkts++;
 					if (numLostPkts % 1000000 == 0) {
 						System.out.println("h2"+ " lost " + numLostPkts + " packets"+ 
-								", H2InputSet.size:" + GlobalData.H2InputSet.size());
+								", H2InputSet.size:" + GlobalData.Instance().H2InputSet.size());
 					}
 					break;
 				}
 				
 				try {
 					Thread.sleep(1);	//1 millisecond
+					if (canExit()) {
+						break;
+					}
 					//System.out.println("h2 wait for H2Set");
 					waitTimes++;
 				} catch (InterruptedException e) {
@@ -106,7 +115,8 @@ public class Host2MainThread implements Runnable {
 				}
 			}//end while
 		}
-
+		
+		System.out.println("Host2MainThread exit");
 	}
 	
 	public void checkOneFlowIsTargetFlow(FlowKey flowKey) {
@@ -127,5 +137,12 @@ public class Host2MainThread implements Runnable {
 			thread = new Thread (this, "Host2MainThread");
 			thread.start();
 		}
+	}
+	
+	private boolean canExit() {
+		if (GlobalData.Instance().AllIntervalsCompleted && GlobalData.Instance().s4exit) {
+			return true;
+		}
+		return false;
 	}
 }

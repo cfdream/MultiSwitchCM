@@ -16,7 +16,12 @@ private Thread thread;
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}	//sleep 1 ms
+			
+			if (GlobalData.Instance().AllIntervalsCompleted) {
+				break;
+			}
 		}
+		System.out.println("Host2GenereateTargetSet exit");
 	}
 
 	public void start()

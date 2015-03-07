@@ -11,7 +11,8 @@ public class Host2ReadGroundTruth implements Runnable {
 		Reader reader = new Reader();
 		reader.readTillIthIntervalPackets(
 				GlobalSetting.SIMULATE_INVERVALS,
-				GlobalData.H2TruthQueue);
+				GlobalData.Instance().H2TruthQueue,
+				"h2");
 	}
 
 	public void start()

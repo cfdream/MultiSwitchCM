@@ -185,6 +185,8 @@ public class ControllerDataInOneInterval {
 				 // TODO Auto-generated catch block
 				 e.printStackTrace();
 			 }
+			 
+			GlobalData.Instance().AllIntervalsCompleted = true;
 		}
 		
 		System.out.println("ControllerDataInOneInterval analyze one interval completed");

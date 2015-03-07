@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import multi.data.Packet;
+import multi.main.GlobalData;
 import multi.main.GlobalSetting;
 
 public class Reader {
@@ -87,7 +88,7 @@ public class Reader {
 	 * @return: -1: error, 0: succ
 	 */
 	public int readTillIthIntervalPackets(int ithInterval,
-			LinkedBlockingQueue<Packet> outputQueue) {
+			LinkedBlockingQueue<Packet> outputQueue, String hostName) {
 		long startUSecond = START_USECOND;
 		long endUSecond = startUSecond + 
 				GlobalSetting.SIMULATE_INVERVALS *
@@ -111,6 +112,9 @@ public class Reader {
 			if (packet.microsec > endUSecond) {
 				break;
 			}
+			if (canExit(hostName)) {
+				break;
+			}
 			
 			//add the packet into a Queue
 			try {
@@ -124,12 +128,31 @@ public class Reader {
 			lines++;
 			totalVolume += packet.length;
 		}
-
+		
 		System.out.println("summary info for " + ithInterval + " interval: "
 				+ "\r\n lines=" + lines + "\r\n totalVolumeForAllFlows="
 				+ totalVolume + "\r\n totoalLostVolume=" + totalLostVolume
 				+ "\r\n VolumeLostRatio=" + 1.0 * totalLostVolume / totalVolume
 				);
 		return 0;
+	}
+	
+	public boolean canExit(String hostName) {
+		if (!GlobalData.Instance().AllIntervalsCompleted) {
+			return false;
+		}
+		
+		if (hostName == "h1") {
+			System.out.println("h1 exit");
+			GlobalData.Instance().h1exit = true;
+			return true;
+		}
+		
+		if (hostName == "h2" && GlobalData.Instance().s4exit) {
+			System.out.println("h2 exit");
+			return true;
+		}
+		
+		return false;
 	}
 }
