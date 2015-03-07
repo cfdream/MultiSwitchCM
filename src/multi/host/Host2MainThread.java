@@ -25,6 +25,7 @@ public class Host2MainThread implements Runnable {
 			while ((pkg = GlobalData.H2TruthQueue.poll()) == null) {
 				try {
 					Thread.sleep(1);
+					//System.out.println("h2 wait for H2TruthQUeue");
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -51,6 +52,7 @@ public class Host2MainThread implements Runnable {
 			}
 			
 			//pkg is from ground truth, check whether it is already received
+			int waitTimes = 0;
 			while (true) {
 				FlowKey flowKey = new FlowKey(pkg);
 				if (GlobalData.H2InputSet.containsKey(pkg)) {
@@ -93,9 +95,14 @@ public class Host2MainThread implements Runnable {
 				
 				try {
 					Thread.sleep(1);	//1 millisecond
+					//System.out.println("h2 wait for H2Set");
+					waitTimes++;
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+				}
+				if (waitTimes == 100) {
+					System.out.println("h2 wait for H2Set for 1000 times");					
 				}
 			}//end while
 		}

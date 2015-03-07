@@ -19,7 +19,11 @@ public class Controller implements Runnable {
 				}
 			}//while
 			
-			ControllerDataInOneInterval.Instance().analyze();
+			if (ControllerDataInOneInterval.Instance().numSwitchDataReceived == 4) {
+				ControllerDataInOneInterval.Instance().analyze();	
+			} else {
+				System.out.println("disorder, discard the result");
+			}
 			ControllerDataInOneInterval.Instance().clear();
 		}
 	}

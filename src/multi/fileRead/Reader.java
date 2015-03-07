@@ -61,12 +61,14 @@ public class Reader {
 				reader.close();
 
 				// open the next file;
-				String filePath = FILE_HEADER + fileString + FILE_TAILER;
 				fileString += MINUTE_STRING_DELTA;
+				String filePath = FILE_HEADER + fileString + FILE_TAILER;
 				File file = new File(filePath);
 				if (!file.exists() || file.isDirectory()) {
+					System.out.println(filePath + " not exist");
 					return null;
 				}
+				System.out.println(filePath + " starts");
 				reader = new BufferedReader(new FileReader(filePath));
 			}
 		} catch (FileNotFoundException e) {

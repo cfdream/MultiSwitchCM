@@ -1,6 +1,5 @@
 package multi.host;
 
-
 import multi.fileRead.Reader;
 import multi.main.GlobalData;
 import multi.main.GlobalSetting;

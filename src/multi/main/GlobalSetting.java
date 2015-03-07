@@ -12,13 +12,13 @@ public class GlobalSetting {
 	/* experiment setup */
 	public static int SECOND_2_USECOND = 1000000;
 	public static int RTT = 1; // millisecond
-	public static int MAX_MINISECONDS_TO_WAIT_FOR_ONE_PKT = 1000 * 1000;
+	public static int MAX_MINISECONDS_TO_WAIT_FOR_ONE_PKT = 50 * 1000;
 	public static int NUM_PKTS_TO_SIGNAL_THE_NETWORK = 100000;	//1000, 10000, 100000, 1000000
 	
 	public static double VOLUME_DROP_RATE = 0.02;
 	
 	public static int INTERVAL_SECONDS = 5; // the number of seconds in one interval
-	public static int SIMULATE_INVERVALS = 8; // how many intervals to test
+	public static int SIMULATE_INVERVALS = 30; // how many intervals to test
 	
 	public static int IS_USE_REPLACE_MECHANISM = 1; // 1: yes, 0: no
 	

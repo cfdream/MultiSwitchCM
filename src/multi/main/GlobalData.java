@@ -23,12 +23,12 @@ public class GlobalData {
 	public ConcurrentHashMap<FlowKey, Integer> gTargetFlowMap = new ConcurrentHashMap<FlowKey, Integer>();
 	public ConcurrentHashMap<FlowKey, Integer> gTargetFlowMapEndOfInterval = new ConcurrentHashMap<FlowKey, Integer>();
 	
-	public static LinkedBlockingQueue<Packet> S1InputQueue= new LinkedBlockingQueue<Packet>(40000000); // 10M
-	public static LinkedBlockingQueue<Packet> S2InputQueue = new LinkedBlockingQueue<Packet>(40000000); // 10M
-	public static LinkedBlockingQueue<Packet> S3InputQueue = new LinkedBlockingQueue<Packet>(40000000); // 10M
-	public static LinkedBlockingQueue<Packet> S4InputQueue = new LinkedBlockingQueue<Packet>(40000000); // 10M
+	public static LinkedBlockingQueue<Packet> S1InputQueue= new LinkedBlockingQueue<Packet>(10000); // 10M
+	public static LinkedBlockingQueue<Packet> S2InputQueue = new LinkedBlockingQueue<Packet>(10000); // 10M
+	public static LinkedBlockingQueue<Packet> S3InputQueue = new LinkedBlockingQueue<Packet>(10000); // 10M
+	public static LinkedBlockingQueue<Packet> S4InputQueue = new LinkedBlockingQueue<Packet>(10000); // 10M
 	public static ConcurrentMap<Packet, Integer> H2InputSet = new ConcurrentHashMap<Packet, Integer>(); // 10M
-	public static LinkedBlockingQueue<Packet> H2TruthQueue = new LinkedBlockingQueue<Packet>(40000000); // 10M
+	public static LinkedBlockingQueue<Packet> H2TruthQueue = new LinkedBlockingQueue<Packet>(10000); // 10M
 	public static long currentMaxPktTimestamp;
 	
 	

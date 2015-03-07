@@ -66,12 +66,12 @@ public class MainTask {
 		Host2MainThread host2MainThread = new Host2MainThread();
 		host2MainThread.start();
 		
-		/*controller*/
-		Controller controller = new Controller();
-		controller.start();
-		
 		/*Host2GenereateTargetSet*/
 		Host2GenereateTargetSet host2GenereateTargetSet = new Host2GenereateTargetSet();
 		host2GenereateTargetSet.start();
+		
+		/*controller*/
+		Controller controller = new Controller();
+		controller.start();
 	}
 }
