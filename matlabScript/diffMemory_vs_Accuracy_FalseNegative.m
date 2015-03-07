@@ -1,4 +1,25 @@
+replacement=load('C:\workspace\projects\eclipse\MultiSwitchCM\data\memorysize vs accuracy_falseNegative\replacement_multi_targetFlowNum_vs_Overhead.txt');
+figure
+hold on;
+scatter(replacement(:,6), replacement(:,2))
 
+set(gca, 'FontSize', 18);
+%legend('host=>switches', 'switches=>controller', 'sum');
+%legend('Location', 'northwest');
+xlabel('buckets in hashmap')
+ylabel('false negative')
+hold off;
+
+figure
+hold on;
+scatter(replacement(:,6), replacement(:,3))
+
+set(gca, 'FontSize', 18);
+%legend('host=>switches', 'switches=>controller', 'sum');
+%legend('Location', 'northwest');
+xlabel('buckets in hashmap')
+ylabel('accuracy')
+hold off;
 
 replacement=load('C:\workspace\projects\eclipse\MultiSwitchCM\data\memorysize vs accuracy_falseNegative\replacement_samplehold_replacement_diffMemory.txt');
 sampleHold=load('C:\workspace\projects\eclipse\MultiSwitchCM\data\memorysize vs accuracy_falseNegative\sh_samplehold_replacement_diffMemory.txt');
