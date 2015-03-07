@@ -1,6 +1,7 @@
 package multi.main;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -20,6 +21,7 @@ public class GlobalData {
 	
 	//used by Host2MainThread and Host2GenerateTargetSet
 	public ConcurrentHashMap<FlowKey, Integer> gTargetFlowMap = new ConcurrentHashMap<FlowKey, Integer>();
+	public ConcurrentHashMap<FlowKey, Integer> gTargetFlowMapEndOfInterval = new ConcurrentHashMap<FlowKey, Integer>();
 	
 	public static LinkedBlockingQueue<Packet> S1InputQueue= new LinkedBlockingQueue<Packet>(40000000); // 10M
 	public static LinkedBlockingQueue<Packet> S2InputQueue = new LinkedBlockingQueue<Packet>(40000000); // 10M
@@ -125,6 +127,15 @@ public class GlobalData {
 	}
 	
 	public void switchFlowMapBuffers() {
+		//switch global data buffer
 		gFlowMapBufferIdx = 1 - gFlowMapBufferIdx;
+		
+		//new interval comes, 
+		//keep the existing target flows buffer for calculation in the controller.
+		gTargetFlowMapEndOfInterval.clear();
+		for (Map.Entry<FlowKey, Integer> entry : gTargetFlowMap.entrySet()) {
+			FlowKey flowKey = entry.getKey();
+			gTargetFlowMapEndOfInterval.put(flowKey, 1);
+		}
 	}
 }

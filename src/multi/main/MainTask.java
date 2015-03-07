@@ -38,7 +38,7 @@ public class MainTask {
 		s3OutQueueList.add(GlobalData.S4InputQueue);
 		s3Data.name = "s3";
 		s3Data.inputQueue = GlobalData.S3InputQueue;
-		s3Data.outputQueueS = s2OutQueueList;
+		s3Data.outputQueueS = s3OutQueueList;
 		
 		s4Data.name = "s4";
 		s4Data.inputQueue = GlobalData.S4InputQueue;

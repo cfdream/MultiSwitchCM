@@ -2,7 +2,6 @@ package multi.data;
 import java.util.ArrayList;
 
 import multi.host.Host2TargetFlowSet;
-import multi.main.GlobalData;
 import multi.main.TargetFlowSetting;
 import multi.sampleModel.PacketSampleSetting;
 

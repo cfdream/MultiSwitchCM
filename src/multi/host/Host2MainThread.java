@@ -54,21 +54,24 @@ public class Host2MainThread implements Runnable {
 			while (true) {
 				FlowKey flowKey = new FlowKey(pkg);
 				if (GlobalData.H2InputSet.containsKey(pkg)) {
+					//remove the pkg from the set
+					GlobalData.H2InputSet.remove(pkg);
 					//the pkg is already received
 					//update normal volume for the flow
 					GlobalData.Instance().insertIntoNormalFlowVolumeMap(flowKey, pkg);
 					checkOneFlowIsTargetFlow(flowKey);
 					
-					/*log*/
 					numReceivedPkts++;
-					if (numReceivedPkts % 1000000 == 0) {
-						System.out.println("h2"+ " received " + numReceivedPkts + " packets " + 
-								", H2InputSet.size:" + GlobalData.H2InputSet.size());
-					}
 					if (numReceivedPkts % GlobalSetting.NUM_PKTS_TO_SIGNAL_THE_NETWORK == 0) {
 						numSingalFlowsReportedToNetwork += GlobalData.Instance().gTargetFlowMap.size();
 						//set switch buffer
 						Host2TargetFlowSet.Instance().toSwitchBuffer = true;
+					}
+					
+					/*log*/
+					if (numReceivedPkts % 1000000 == 0) {
+						System.out.println("h2"+ " received " + numReceivedPkts + " packets " + 
+								", H2InputSet.size:" + GlobalData.H2InputSet.size());
 					}
 					break;
 				}

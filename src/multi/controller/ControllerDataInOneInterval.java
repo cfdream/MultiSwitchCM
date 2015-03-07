@@ -12,6 +12,7 @@ import multi.data.FixSizeHashMap;
 import multi.data.FlowKey;
 import multi.lib.library;
 import multi.lib.library.AverageDeviation;
+import multi.main.GlobalData;
 import multi.main.GlobalSetting;
 import multi.main.TargetFlowSetting;
 import multi.sampleModel.PacketSampleSetting;
@@ -142,8 +143,21 @@ public class ControllerDataInOneInterval {
 					+ averageAccuracy  + " "
 					+ totalTargetFlowCaptured + " "
 					+ networkOverheadFromH2 + " "
-					+ PacketSampleSetting.SH_BUCKET_SIZE
+					+ PacketSampleSetting.SH_BUCKET_SIZE + " "
+					+ GlobalSetting.NUM_PKTS_TO_SIGNAL_THE_NETWORK + " "
 					+ "\r\n");
+			
+			writer.write(
+					s1Performance.falseNegative + " "
+					+ s2Performance.falseNegative + " "
+					+ s3Performance.falseNegative + " "
+					+ s4Performance.falseNegative + " "
+					+ s1Performance.accracy + " "
+					+ s2Performance.accracy + " "
+					+ s3Performance.accracy + " "
+					+ s4Performance.accracy + " "
+					+"\r\n");
+			
 			writer.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -163,7 +177,8 @@ public class ControllerDataInOneInterval {
 						 + averageDeviationAccuracy.avgValue + " "
 						 + averageDeviationAccuracy.deviation + " "
 						 + averageDeviationFN.avgValue + " "
-						 + averageDeviationFN.deviation
+						 + averageDeviationFN.deviation + " "
+						 + GlobalSetting.NUM_PKTS_TO_SIGNAL_THE_NETWORK
 						 + "\r\n");
 				 writer.close();
 			 } catch (IOException e) {
@@ -180,6 +195,7 @@ public class ControllerDataInOneInterval {
 			HashMap<FlowKey, Long> groundTruthFlowVolumeMap) {
 		SwitchPerformance switchPerformance = new SwitchPerformance();
 		
+		int numTargetFlowsItSelf = 0;
 		int numTargetFlows = 0;
 		int numSampledTargetFlows = 0;
 		double totalAccuracy = 0;
@@ -187,20 +203,41 @@ public class ControllerDataInOneInterval {
 		for (Map.Entry<FlowKey, Long> entry : groundTruthFlowVolumeMap.entrySet()) {
 			FlowKey flowKey = entry.getKey();
 			long groundTruthVolume = entry.getValue();
-			double groundTruthLossRate = getLossRateForOneFlow(flowKey);
-			if (groundTruthVolume < TargetFlowSetting.TARGET_FLOW_TOTAL_VOLUME_THRESHOLD) {
-				continue;
+			double lossRate = getLossRate(flowKey);
+			if (groundTruthVolume > TargetFlowSetting.TARGET_FLOW_TOTAL_VOLUME_THRESHOLD
+				&& lossRate > TargetFlowSetting.TARGET_FLOW_LOST_RATE_THRESHOLD){
+				numTargetFlowsItSelf++;
 			}
-			if (groundTruthLossRate < TargetFlowSetting.TARGET_FLOW_LOST_RATE_THRESHOLD) {
+			
+			if (!isTargetFlow(flowKey)) {
 				continue;
 			}
 			
-			//one target flow
+			//one target flow: target flows that travel through the switch
 			numTargetFlows++;
 			
+			//if this target flow is not in the signal from the host, it will not be reported to the controller.
+			if (!GlobalData.Instance().gTargetFlowMapEndOfInterval.containsKey(flowKey)) {
+				continue;
+			}
 			
 			Long sampleVolume = sampleFlowVolumeMap.get(flowKey);
 			if (sampleVolume == null) {
+				/*
+				BufferedWriter writer;
+				try {
+					writer = new BufferedWriter(new FileWriter(
+							GlobalSetting.TARGET_FLOW_NUM_OVERHEAD_RESULT_FILE_NAME, true));
+					writer.write(
+							groundTruthVolume
+							+"\r\n");
+					writer.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}		
+				*/		
+				
 				continue;
 			} 
 			
@@ -215,12 +252,30 @@ public class ControllerDataInOneInterval {
 			switchPerformance.accracy = totalAccuracy / numSampledTargetFlows;
 			switchPerformance.falseNegative = 1 - 1.0 * numSampledTargetFlows / numTargetFlows;
 			switchPerformance.numTargetFlowCaptured = numSampledTargetFlows;
+			
+			/*
+			System.out.println(numTargetFlowsItSelf);
+			BufferedWriter writer;
+			try {
+				writer = new BufferedWriter(new FileWriter(
+						GlobalSetting.TARGET_FLOW_NUM_OVERHEAD_RESULT_FILE_NAME, true));
+				writer.write(
+						numTargetFlows + " " + numTargetFlowsItSelf + " "
+						+ numSampledTargetFlows + " "
+						+ groundTruthFlowVolumeMap.size()
+						+"\r\n");
+				writer.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			*/
 		}
 		
 		return switchPerformance;
 	}
 	
-	public double getLossRateForOneFlow(FlowKey flowKey) {
+	public boolean isTargetFlow(FlowKey flowKey) {
 		double lossRate = 0;
 		Long flowLostVolume = groundTruthFlowLostVolumeMap.get(flowKey);
 		if (null == flowLostVolume) {
@@ -233,7 +288,24 @@ public class ControllerDataInOneInterval {
 		Long totalVolume = flowLostVolume + normalVolume;
 		lossRate = 1.0 * flowLostVolume / totalVolume;
 
-		return lossRate;		
+		return lossRate >= TargetFlowSetting.TARGET_FLOW_LOST_RATE_THRESHOLD
+				&& totalVolume >= TargetFlowSetting.TARGET_FLOW_TOTAL_VOLUME_THRESHOLD;
+	}
+	
+	public double getLossRate(FlowKey flowKey) {
+		double lossRate = 0;
+		Long flowLostVolume = groundTruthFlowLostVolumeMap.get(flowKey);
+		if (null == flowLostVolume) {
+			flowLostVolume = 0L;
+		}
+		Long normalVolume = groundTruthFlowNormalVolumeMap.get(flowKey);
+		if (null == normalVolume) {
+			normalVolume = 0L;
+		}
+		Long totalVolume = flowLostVolume + normalVolume;
+		lossRate = 1.0 * flowLostVolume / totalVolume;
+
+		return lossRate;
 	}
 	
 	public int getNumTargetFlows() {

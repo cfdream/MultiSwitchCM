@@ -141,7 +141,12 @@ public class Switch implements Runnable {
 		sampledFlowVolumeMap.clear();
 	}
 	
-	public int handleOneIncomingPacket(Packet pkg) {
+	public int handleOneIncomingPacket(Packet pkg) {		
+		//if the packet is dropped, return
+		if (switchIntOutData.switchDropPackets && packetDropConsecutivePackets.drop(pkg)) {
+			return 0;
+		}
+		
 		//record the ground truth at this switch
 		HashMap<FlowKey, Long> groundTruthFlowVolumeMap = groundTruthFlowBuffer.get(flowBufferIdx);
 		FlowKey flowKey = new FlowKey(pkg);
@@ -149,11 +154,6 @@ public class Switch implements Runnable {
 			groundTruthFlowVolumeMap.put(flowKey, groundTruthFlowVolumeMap.get(flowKey) + pkg.length); 
 		} else {
 			groundTruthFlowVolumeMap.put(flowKey, pkg.length);
-		}
-		
-		//if the packet is dropped, return
-		if (switchIntOutData.switchDropPackets && packetDropConsecutivePackets.drop(pkg)) {
-			return 0;
 		}
 		
 		//if a new interval, switch buffer, and send data to controller
@@ -175,7 +175,7 @@ public class Switch implements Runnable {
 				} else {
 					int idx = ECMP.getOutIndex(pkg, switchIntOutData.outputQueueS.size());
 					switchIntOutData.outputQueueS.get(idx).put(pkg);
-				}	
+				}
 			} else {
 				//switch 4
 				switchIntOutData.H2InputSet.put(pkg, 1);

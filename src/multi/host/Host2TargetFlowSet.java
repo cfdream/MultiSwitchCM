@@ -43,7 +43,7 @@ public class Host2TargetFlowSet {
 		//reset toSwitchBuffer
 		toSwitchBuffer = false;
 		
-		System.out.println("Host2TargetFlowSet switch buffer completed");
+		//System.out.println("Host2TargetFlowSet switch buffer completed");
 	}
 	
 	public boolean isTargetFlow(FlowKey flowKey) {
