@@ -98,24 +98,28 @@ public class MainTask {
 		GlobalSetting.SIMULATE_INVERVALS = 21;
 		
 		double[] memRatioList = {0.1, 0.25, 0.5, 0.75, 1 }; 
-		for (int isUse = 1; isUse <= 1; isUse++) {
+		for (int isUse = 0; isUse <= 1; isUse++) {
 			GlobalSetting.IS_USE_REPLACE_MECHANISM = isUse;
-			for (int ithMemRatio = 4; ithMemRatio <= 4; ithMemRatio++) {
-				PacketSampleSetting.SHRINK_RATIO = memRatioList[ithMemRatio];
-				PacketSampleSetting.SH_BUCKET_SIZE = (int)(
-						PacketSampleSetting.SHRINK_RATIO * 
-						PacketSampleSetting.DEAFULT_BYTE_SAMPLE_RATE * 
-						PacketSampleSetting.TOTAL_VOLUME_IN_ONE_TIME_INTERVAL);
-				for (int ratio = 2; ratio <= 16; ratio*=2){
-					PacketSampleSetting.BYTE_RATE_INCREASE_RATIO = ratio;
-					runOneExperiment();
-					while (!GlobalData.Instance().AllThreadExit()) {
-						//wait till the current experiment is over.
-						try {
-							Thread.sleep(10);
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+			for (int isCapture = 0; isCapture <= 1; isCapture++) {
+				GlobalSetting.IS_CAPTURE_TARGET_FLOWS = isCapture;
+				//SH, SH+replace, SH+select, SH+replace+select
+				for (int ithMemRatio = 0; ithMemRatio < memRatioList.length; ithMemRatio++) {
+					PacketSampleSetting.SHRINK_RATIO = memRatioList[ithMemRatio];
+					PacketSampleSetting.SH_BUCKET_SIZE = (int)(
+							PacketSampleSetting.SHRINK_RATIO * 
+							PacketSampleSetting.DEAFULT_BYTE_SAMPLE_RATE * 
+							PacketSampleSetting.TOTAL_VOLUME_IN_ONE_TIME_INTERVAL);
+					for (int ratio = 1; ratio <= 8; ratio*=2){
+						PacketSampleSetting.BYTE_RATE_INCREASE_RATIO = ratio;
+						runOneExperiment();
+						while (!GlobalData.Instance().AllThreadExit()) {
+							//wait till the current experiment is over.
+							try {
+								Thread.sleep(10);
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 						}
 					}
 				}

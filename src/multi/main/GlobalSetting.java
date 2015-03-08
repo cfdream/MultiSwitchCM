@@ -21,6 +21,7 @@ public class GlobalSetting {
 	public static int SIMULATE_INVERVALS = 3; // how many intervals to test
 	
 	public static int IS_USE_REPLACE_MECHANISM = 1; // 1: yes, 0: no
+	public static int IS_CAPTURE_TARGET_FLOWS = 1;
 	
 	public static int FIRST_INTERVAL =1;
 	public static  long FIRST_INTERVAL_START_USECOND = 21600000000L;

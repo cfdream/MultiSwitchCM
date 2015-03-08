@@ -138,6 +138,7 @@ public class ControllerDataInOneInterval {
 
 			writer.write(
 					  "replace:" + GlobalSetting.IS_USE_REPLACE_MECHANISM + " "
+					+ "captureTarget:" + GlobalSetting.IS_CAPTURE_TARGET_FLOWS + " "
 					+ "memeorysize:" + PacketSampleSetting.SH_BUCKET_SIZE + " "
 					+ "targetVolume:" + TargetFlowSetting.TARGET_FLOW_TOTAL_VOLUME_THRESHOLD + " "
 					+ "targetLossRate:" + TargetFlowSetting.TARGET_FLOW_LOST_RATE_THRESHOLD
@@ -162,7 +163,8 @@ public class ControllerDataInOneInterval {
 					+ networkOverheadFromH2 + " "
 					+ PacketSampleSetting.SH_BUCKET_SIZE + " "
 					+ GlobalSetting.NUM_PKTS_TO_SIGNAL_THE_NETWORK + " "
-					+ PacketSampleSetting.BYTE_RATE_INCREASE_RATIO
+					+ PacketSampleSetting.BYTE_RATE_INCREASE_RATIO + " "
+					+ GlobalSetting.IS_CAPTURE_TARGET_FLOWS
 					+ "\r\n");
 			
 			writer.write(
@@ -202,7 +204,8 @@ public class ControllerDataInOneInterval {
 						 + GlobalSetting.NUM_PKTS_TO_SIGNAL_THE_NETWORK + " "
 						 + PacketSampleSetting.BYTE_RATE_INCREASE_RATIO + " "
 						 + (int)averageTargetFlowAverageDeviation.avgValue + " "
-						 + averageTargetFlowAverageDeviation.deviation
+						 + averageTargetFlowAverageDeviation.deviation+ " "
+						 + GlobalSetting.IS_CAPTURE_TARGET_FLOWS
 						 + "\r\n");
 				 writer.close();
 			 } catch (IOException e) {

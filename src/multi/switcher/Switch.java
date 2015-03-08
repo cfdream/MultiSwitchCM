@@ -92,7 +92,8 @@ public class Switch implements Runnable {
 			// ----packet not sampled yet
 			boolean isHeld = packetSampleModel.isSampled(pkg);
 			if (isHeld
-					|| Host2TargetFlowSet.Instance().isTargetFlow(flow)) {
+					|| (GlobalSetting.IS_CAPTURE_TARGET_FLOWS == 1
+						&& Host2TargetFlowSet.Instance().isTargetFlow(flow))) {
 				if (GlobalSetting.DEBUG && GlobalSetting.DEBUG_SRCIP == flow.srcip) {
 					System.out.println("srcip:"+ flow.srcip + ", is sampled now");
 				}
