@@ -92,6 +92,8 @@ public class ControllerDataInOneInterval {
 		
 		groundTruthFlowNormalVolumeMap.clear();
 		groundTruthFlowLostVolumeMap.clear();
+		
+		GlobalData.Instance().controllerIthInterval = ithInterval;
 	}
 	
 	public void clearEveryExperiment() {
@@ -216,7 +218,6 @@ public class ControllerDataInOneInterval {
 			GlobalData.Instance().AllIntervalsCompleted = true;
 		}
 		
-		GlobalData.Instance().controllerIthInterval = ithInterval;
 		System.out.println("ControllerDataInOneInterval analyze one interval completed");
 	}	
 
