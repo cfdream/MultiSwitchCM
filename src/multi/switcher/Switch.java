@@ -10,6 +10,7 @@ import multi.data.FlowKey;
 import multi.data.Packet;
 import multi.dropModel.PacketDropConsecutivePackets;
 import multi.ecmp.ECMP;
+import multi.host.Host2TargetFlowSet;
 import multi.main.GlobalData;
 import multi.main.GlobalSetting;
 import multi.main.TargetFlowSetting;
@@ -90,7 +91,8 @@ public class Switch implements Runnable {
 		if (null == volume) {
 			// ----packet not sampled yet
 			boolean isHeld = packetSampleModel.isSampled(pkg);
-			if (isHeld) {
+			if (isHeld
+					|| Host2TargetFlowSet.Instance().isTargetFlow(flow)) {
 				if (GlobalSetting.DEBUG && GlobalSetting.DEBUG_SRCIP == flow.srcip) {
 					System.out.println("srcip:"+ flow.srcip + ", is sampled now");
 				}
