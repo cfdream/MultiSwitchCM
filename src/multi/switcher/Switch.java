@@ -49,8 +49,9 @@ public class Switch implements Runnable {
 	
 	public void switchBufferAndNotifyController() {
 		flowBufferIdx = 1 - flowBufferIdx;
-		System.out.println(switchIntOutData.name + ": " + ithInterval + " interval, " + 
-				"mapsize:" + groundTruthFlowBuffer.get(flowBufferIdx).size());
+		System.out.println(switchIntOutData.name + ": " + ithInterval + " interval, " 
+				+ "mapsize:" + groundTruthFlowBuffer.get(flowBufferIdx).size()
+				+ ", ControllerInterval:" + GlobalData.Instance().controllerIthInterval);
 		
 		//sendDataToControllerAndClearStatus();
 		if (switchIntOutData.name == "s1") {
@@ -160,6 +161,10 @@ public class Switch implements Runnable {
 		if (pkg.getIthInterval() > ithInterval) {
 			//if pkg.interval < current interval, it is the disorder of packets happening at S4
 			ithInterval = pkg.getIthInterval();
+			
+			//wait for h2 to finish the previous interval
+			s1WaitControllerToFinishPreInterval();
+			
 			switchBufferAndNotifyController();
 		}
 		
@@ -259,9 +264,26 @@ public class Switch implements Runnable {
 				&& GlobalData.Instance().s2exit 
 				&& GlobalData.Instance().s3exit) {
 			GlobalData.Instance().s4exit = true;
-			return true;			
+			return true;
 		}
 		
 		return false;
+	}
+	
+	public void s1WaitControllerToFinishPreInterval() {
+		if (switchIntOutData.name != "s1") {
+			return;
+		}
+		while (true) {
+			if (ithInterval - GlobalData.Instance().controllerIthInterval <= 1) {
+				return;
+			}
+			try {
+				Thread.sleep(1);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 }

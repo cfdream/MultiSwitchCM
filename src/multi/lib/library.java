@@ -32,5 +32,25 @@ public class library {
 		
 		AverageDeviation averageDeviation = new AverageDeviation(avgValue, standardDeviation);
 		return averageDeviation;
+	}
+	
+	public static AverageDeviation computeAverageDeviationInt(ArrayList<Integer> listValue) {
+		Integer totalValue = 0;
+		for (Iterator<Integer> iterator = listValue.iterator(); iterator.hasNext();) {
+			Integer value = iterator.next();
+			totalValue += value;
+		}
+		
+		Integer avgValue = totalValue / listValue.size();
+		
+		double standardDeviation = 0;
+		for (Iterator<Integer> iterator = listValue.iterator(); iterator.hasNext();) {
+			Integer value = iterator.next();
+			standardDeviation += Math.pow(value - avgValue, 2);
+		}
+		standardDeviation = Math.pow(standardDeviation / listValue.size(), 0.5);
+		
+		AverageDeviation averageDeviation = new AverageDeviation(avgValue, standardDeviation);
+		return averageDeviation;
 	} 
 }

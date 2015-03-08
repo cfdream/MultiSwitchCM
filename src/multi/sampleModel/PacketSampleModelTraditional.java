@@ -15,10 +15,9 @@ public class PacketSampleModelTraditional extends PacketSampleModel{
 	
 	@Override
 	public boolean isSampled(Packet packet) {
-		double byteSamplingRate = PacketSampleSetting.DEAFULT_BYTE_SAMPLE_RATE;
-		if (GlobalSetting.IS_USE_REPLACE_MECHANISM == 1) {
-			byteSamplingRate = PacketSampleSetting.REPLACEMENT_BYTE_SAMPLE_RATE;			
-		}
+		double byteSamplingRate = PacketSampleSetting.DEAFULT_BYTE_SAMPLE_RATE
+				*PacketSampleSetting.BYTE_RATE_INCREASE_RATIO;
+		
 		double packetSampleRate = packet.length * byteSamplingRate;		
 		double randDouble = random.nextDouble();
 		

@@ -16,8 +16,7 @@ public class PacketSampleSetting {
 	//initial byte sampling rate for S&H
 	public static double DEAFULT_BYTE_SAMPLE_RATE = 
 			OVER_SAMPLING_RATIO	/ TargetFlowSetting.TARGET_FLOW_TOTAL_VOLUME_THRESHOLD;
-	public static int REPLACEMENT_INCREASE_RATIO = 10;
-	public static double REPLACEMENT_BYTE_SAMPLE_RATE = REPLACEMENT_INCREASE_RATIO * DEAFULT_BYTE_SAMPLE_RATE;
+	public static int BYTE_RATE_INCREASE_RATIO = 10;
 	
 	//buckets in hashmap
 	public static double SHRINK_RATIO = 1;	//0.1, 0.25, 0.5, 0.75, 1 

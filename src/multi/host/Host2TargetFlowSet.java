@@ -25,6 +25,13 @@ public class Host2TargetFlowSet {
 		return singleInstanceFlowSet;
 	}
 	
+	public void clear() {
+		targetFlowSetBuffer.get(0).clear();
+		targetFlowSetBuffer.get(1).clear();
+		bufferIdx = 0;
+		toSwitchBuffer = false;
+	}
+	
 	public void copyAndSwitchBuffer(ConcurrentHashMap<FlowKey, Integer> sourceMap) {
 		//add into the rest buffer
 		ConcurrentHashMap<FlowKey, Integer> restBufferMap = targetFlowSetBuffer.get(1-bufferIdx);

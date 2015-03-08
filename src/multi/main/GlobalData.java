@@ -38,6 +38,10 @@ public class GlobalData {
 	public boolean s2exit;
 	public boolean s3exit;
 	public boolean s4exit;
+	public boolean h2exit;
+	public boolean h2ReaderExit;
+	//signal from h2 to s1
+	public int controllerIthInterval;
 	
 	private GlobalData() {
 		random = new Random(System.currentTimeMillis());
@@ -56,6 +60,10 @@ public class GlobalData {
 		s2exit = false;
 		s3exit = false;
 		s4exit = false;
+		h2exit = false;
+		h2ReaderExit = false;
+		
+		controllerIthInterval = GlobalSetting.FIRST_INTERVAL;
 	}
 	
 	public static GlobalData Instance() {
@@ -64,8 +72,17 @@ public class GlobalData {
 	
 	private static GlobalData singleInstance = new GlobalData();
 	
-	//At the start of each interval, this function should be called
+	//At the start of each experiment, this function should be called
 	public void clear() {		
+		gNormalFlowMapBuffer.get(0).clear();
+		gNormalFlowMapBuffer.get(1).clear();
+		gLostFlowMapBuffer.get(0).clear();
+		gLostFlowMapBuffer.get(1).clear();
+		gFlowMapBufferIdx = 0;
+
+		gTargetFlowMap.clear();
+		gTargetFlowMapEndOfInterval.clear();
+		
 		S1InputQueue.clear();
 		S2InputQueue.clear();
 		S3InputQueue.clear();
@@ -73,6 +90,22 @@ public class GlobalData {
 		H2InputSet.clear();
 		H2TruthQueue.clear();
 		currentMaxPktTimestamp = 0;
+		
+		AllIntervalsCompleted = false;
+		h1exit = false;
+		s1exit = false;
+		s2exit = false;
+		s3exit = false;
+		s4exit = false;
+		h2exit = false;
+		h2ReaderExit = false;
+		
+		controllerIthInterval = GlobalSetting.FIRST_INTERVAL;
+	}
+	
+	public boolean AllThreadExit() {
+		return AllIntervalsCompleted && h1exit && s1exit && s2exit && s3exit && s4exit 
+				&& h2exit && h2ReaderExit;
 	}
 	
 	public void insertIntoNormalFlowVolumeMap(FlowKey flow, Packet pkg) {

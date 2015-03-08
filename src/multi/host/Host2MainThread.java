@@ -50,8 +50,10 @@ public class Host2MainThread implements Runnable {
 						GlobalData.Instance().gLostFlowMapBuffer.get(1-GlobalData.Instance().gFlowMapBufferIdx);
 				ControllerDataInOneInterval.Instance().groundTruthFlowNormalVolumeMap = 
 						GlobalData.Instance().gNormalFlowMapBuffer.get(1-GlobalData.Instance().gFlowMapBufferIdx);
+				
 				ControllerDataInOneInterval.Instance().networkOverheadFromH2 = numSingalFlowsReportedToNetwork;
 				ControllerDataInOneInterval.Instance().isH2DataReceived = true;
+				ControllerDataInOneInterval.Instance().ithInterval = ithInterval;
 				
 				GlobalData.Instance().gTargetFlowMap.clear();
 				numSingalFlowsReportedToNetwork = 0;
@@ -111,12 +113,10 @@ public class Host2MainThread implements Runnable {
 					e.printStackTrace();
 				}
 				if (waitTimes == 100) {
-					System.out.println("h2 wait for H2Set for 1000 times");					
+					System.out.println("h2 wait for H2Set for 1000 times");
 				}
 			}//end while
 		}
-		
-		System.out.println("Host2MainThread exit");
 	}
 	
 	public void checkOneFlowIsTargetFlow(FlowKey flowKey) {
@@ -140,7 +140,11 @@ public class Host2MainThread implements Runnable {
 	}
 	
 	private boolean canExit() {
-		if (GlobalData.Instance().AllIntervalsCompleted && GlobalData.Instance().s4exit) {
+		if (GlobalData.Instance().AllIntervalsCompleted 
+				&& GlobalData.Instance().s4exit) {
+			GlobalData.Instance().H2TruthQueue.clear();
+			GlobalData.Instance().h2exit = true;
+			System.out.println("Host2MainThread exit");
 			return true;
 		}
 		return false;

@@ -129,6 +129,14 @@ public class Reader {
 			totalVolume += packet.length;
 		}
 		
+		if (hostName == "h1") {
+			GlobalData.Instance().h1exit = true;
+			System.out.println("h1 exit");
+		} else if (hostName == "h2") {
+			GlobalData.Instance().h2ReaderExit = true;
+			System.out.println("h2ReaderExit exit");
+		}
+
 		System.out.println("summary info for " + ithInterval + " interval: "
 				+ "\r\n lines=" + lines + "\r\n totalVolumeForAllFlows="
 				+ totalVolume + "\r\n totoalLostVolume=" + totalLostVolume
@@ -149,7 +157,8 @@ public class Reader {
 		}
 		
 		if (hostName == "h2" && GlobalData.Instance().s4exit) {
-			System.out.println("h2 exit");
+			System.out.println("h2ReaderExit exit");
+			GlobalData.Instance().h2ReaderExit = true;
 			return true;
 		}
 		

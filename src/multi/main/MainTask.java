@@ -4,16 +4,133 @@ import java.util.ArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import multi.controller.Controller;
+import multi.controller.ControllerDataInOneInterval;
 import multi.data.Packet;
 import multi.host.Host1;
 import multi.host.Host2GenereateTargetSet;
 import multi.host.Host2MainThread;
 import multi.host.Host2ReadGroundTruth;
+import multi.host.Host2TargetFlowSet;
+import multi.sampleModel.PacketSampleSetting;
 import multi.switcher.Switch;
 import multi.switcher.SwitchData;
 
 public class MainTask {
 	public static void main(String[] args) {
+		tryDiffMemoryDiffByteIncreaseRatio();
+	}
+	
+	public static void tryDiffTargetFlowNumVSOverhead() {
+		GlobalSetting.IS_USE_REPLACE_MECHANISM = 1;
+		GlobalSetting.SIMULATE_INVERVALS = 10;
+		PacketSampleSetting.BYTE_RATE_INCREASE_RATIO = 2;
+		
+		//only change loss rate
+		GlobalSetting.TARGET_FLOW_NUM_OVERHEAD_RESULT_FILE_NAME = 
+				"data\\diffTargetFlowNumChangeLossRate_VS_Overhead.txt";
+		for (double lossRate=0.002; lossRate <= 0.04; lossRate+=0.002) {
+			TargetFlowSetting.TARGET_FLOW_LOST_RATE_THRESHOLD = lossRate;
+			runOneExperiment();
+			while (!GlobalData.Instance().AllThreadExit()) {
+				//wait till the current experiment is over.
+				try {
+					Thread.sleep(10);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		//only change volume
+		TargetFlowSetting.TARGET_FLOW_LOST_RATE_THRESHOLD = 0.005;
+		GlobalSetting.TARGET_FLOW_NUM_OVERHEAD_RESULT_FILE_NAME = 
+				"data\\diffTargetFlowNumChangeVolume_VS_Overhead.txt";
+		for (int volume = 10000; volume <= 200000; volume+=10000) {
+			TargetFlowSetting.TARGET_FLOW_TOTAL_VOLUME_THRESHOLD = volume;
+			runOneExperiment();
+			while (!GlobalData.Instance().AllThreadExit()) {
+				//wait till the current experiment is over.
+				try {
+					Thread.sleep(10);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
+	public static void tryDiffNumPktsToSendSignal() {
+		GlobalSetting.MEMORY_REPLACEMENT_RESULT_FILE_NAME = "data\\diffNumPktsToSendSignal_vs_AccuracyFN.txt";
+		GlobalSetting.IS_USE_REPLACE_MECHANISM = 1;
+		GlobalSetting.SIMULATE_INVERVALS = 21;
+		PacketSampleSetting.BYTE_RATE_INCREASE_RATIO = 2;
+		
+		double[] memRatioList = {0.1, 0.25, 0.5, 0.75, 1 }; 
+		for (int numPkts = 100000; numPkts <= 1000000; numPkts*=10) {
+			GlobalSetting.NUM_PKTS_TO_SIGNAL_THE_NETWORK = numPkts;
+			for (int ithMemRatio = 1; ithMemRatio <= 1; ithMemRatio++) {
+				PacketSampleSetting.SHRINK_RATIO = memRatioList[ithMemRatio];
+				PacketSampleSetting.SH_BUCKET_SIZE = (int)(
+						PacketSampleSetting.SHRINK_RATIO * 
+						PacketSampleSetting.DEAFULT_BYTE_SAMPLE_RATE * 
+						PacketSampleSetting.TOTAL_VOLUME_IN_ONE_TIME_INTERVAL);
+				runOneExperiment();
+				while (!GlobalData.Instance().AllThreadExit()) {
+					//wait till the current experiment is over.
+					try {
+						Thread.sleep(10);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+	}
+	
+	public static void tryDiffMemoryDiffByteIncreaseRatio() {
+		GlobalSetting.MEMORY_REPLACEMENT_RESULT_FILE_NAME = "data\\diffMemory_vs_samplehold_replacement.txt";
+		//TODO: this can be calculated from 
+		GlobalSetting.NUM_PKTS_TO_SIGNAL_THE_NETWORK = 100000;		//now setting
+		
+		GlobalSetting.SIMULATE_INVERVALS = 21;
+		
+		double[] memRatioList = {0.1, 0.25, 0.5, 0.75, 1 }; 
+		for (int isUse = 1; isUse <= 1; isUse++) {
+			GlobalSetting.IS_USE_REPLACE_MECHANISM = isUse;
+			for (int ithMemRatio = 4; ithMemRatio <= 4; ithMemRatio++) {
+				PacketSampleSetting.SHRINK_RATIO = memRatioList[ithMemRatio];
+				PacketSampleSetting.SH_BUCKET_SIZE = (int)(
+						PacketSampleSetting.SHRINK_RATIO * 
+						PacketSampleSetting.DEAFULT_BYTE_SAMPLE_RATE * 
+						PacketSampleSetting.TOTAL_VOLUME_IN_ONE_TIME_INTERVAL);
+				for (int ratio = 2; ratio <= 16; ratio*=2){
+					PacketSampleSetting.BYTE_RATE_INCREASE_RATIO = ratio;
+					runOneExperiment();
+					while (!GlobalData.Instance().AllThreadExit()) {
+						//wait till the current experiment is over.
+						try {
+							Thread.sleep(10);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	public static void runOneExperiment() {
+		System.out.println("-------------------------NEW EXPERIMENT------------------------");
+		
+		//clear data.
+		ControllerDataInOneInterval.Instance().clearEveryExperiment();
+		Host2TargetFlowSet.Instance().clear();
+		GlobalData.Instance().clear();		
+		
 		//init 4 switches
 		SwitchData s1Data = new SwitchData();
 		SwitchData s2Data = new SwitchData();

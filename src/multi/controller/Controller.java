@@ -31,7 +31,9 @@ public class Controller implements Runnable {
 				break;
 			}
 			
-			ControllerDataInOneInterval.Instance().clear();
+			//clear the interval data for future usage
+			//the data are used by each switch and host 2
+			ControllerDataInOneInterval.Instance().clearEveryInterval();
 		}
 		
 		System.out.println("Controller exit");
