@@ -24,11 +24,11 @@ function diffNumPktsToSendSignal_vs_AccuracyFN()
     hold on;    
     %errorbar(1:4, accuracy(1,:), accuracySD(1,:), '-rv', 'linewidth', 1.5);
     %errorbar(1:4, accuracy(2,:), accuracySD(2,:), '-g>', 'linewidth', 1.5);
-    errorbar(1:4, accuracy(3,:), accuracySD(3,:), '-b^', 'linewidth', 1.5);
-    errorbar(1:4, accuracy(4,:), accuracySD(4,:), '-m+', 'linewidth', 1.5);
-    errorbar(1:4, accuracy(5,:), accuracySD(5,:), '-co', 'linewidth', 1.5);
-    errorbar(1:4, accuracy(6,:), accuracySD(6,:), '-.r<', 'linewidth', 1.5);
-    errorbar(1:4, accuracy(7,:), accuracySD(7,:), '-.g>', 'linewidth', 1.5);
+    errorbar(1:4, accuracy(3,:), accuracySD(3,:), '-r^', 'linewidth', 1.5);
+    errorbar(1:4, accuracy(4,:), accuracySD(4,:), '-g+', 'linewidth', 1.5);
+    errorbar(1:4, accuracy(5,:), accuracySD(5,:), '-bo', 'linewidth', 1.5);
+    errorbar(1:4, accuracy(6,:), accuracySD(6,:), '-m<', 'linewidth', 1.5);
+    errorbar(1:4, accuracy(7,:), accuracySD(7,:), '-c>', 'linewidth', 1.5);
 
     set(gca, 'FontSize', 18,'XTick', 1:4, 'xticklabel', {1000, 10000, 100000, 1000000});
     legend('#buckets=20604', '#buckets=51510', '#buckets=103020', '#buckets=154530',  '#buckets=206040');
@@ -36,8 +36,8 @@ function diffNumPktsToSendSignal_vs_AccuracyFN()
     legend('boxoff');
     xlabel('Send Condition when receiving #pkts')
     ylabel('accuracy')
-    %xlim([0.95,4.05])
-    %ylim([0.70,0.95])
+    xlim([0.95,4.05])
+    ylim([0.75,0.96])
     hold off;
     
     %false negative
@@ -45,11 +45,11 @@ function diffNumPktsToSendSignal_vs_AccuracyFN()
     hold on;    
     %errorbar(1:4, fn(1,:), fnSD(1,:), '-rv', 'linewidth', 1.5);
     %errorbar(1:4, fn(2,:), fnSD(2,:), '-g>', 'linewidth', 1.5);
-    errorbar(1:4, fn(3,:), fnSD(3,:), '-b^', 'linewidth', 1.5);
-    errorbar(1:4, fn(4,:), fnSD(4,:), '-m+', 'linewidth', 1.5);
-    errorbar(1:4, fn(5,:), fnSD(5,:), '-co', 'linewidth', 1.5);
-    errorbar(1:4, fn(6,:), fnSD(6,:), '-.r<', 'linewidth', 1.5);
-    errorbar(1:4, fn(7,:), fnSD(7,:), '-.g>', 'linewidth', 1.5);
+    errorbar(1:4, fn(3,:), fnSD(3,:), '-r^', 'linewidth', 1.5);
+    errorbar(1:4, fn(4,:), fnSD(4,:), '-g+', 'linewidth', 1.5);
+    errorbar(1:4, fn(5,:), fnSD(5,:), '-bo', 'linewidth', 1.5);
+    errorbar(1:4, fn(6,:), fnSD(6,:), '-m<', 'linewidth', 1.5);
+    errorbar(1:4, fn(7,:), fnSD(7,:), '-c>', 'linewidth', 1.5);
 
     set(gca, 'FontSize', 18,'XTick', 1:4, 'xticklabel', {1000, 10000, 100000, 1000000});
     %{2060, 10302, 20604, 51510, 103020, 154530, 206040}
@@ -58,8 +58,8 @@ function diffNumPktsToSendSignal_vs_AccuracyFN()
     legend('boxoff');
     xlabel('Send Condition when receiving #pkts')
     ylabel('false negative')
-    %xlim([0.95,4.05])
-    %ylim([0.70,0.95])
+    xlim([0.95,4.05])
+    ylim([0.02,0.15])
     hold off;
 end
 

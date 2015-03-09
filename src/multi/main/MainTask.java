@@ -17,7 +17,49 @@ import multi.switcher.SwitchData;
 
 public class MainTask {
 	public static void main(String[] args) {
-		tryDiffMemoryDiffByteIncreaseRatio();
+		double startLossRate = 0.02;
+		double endlossRate = 0.03;
+		tryDiffTargetFlowNumVsMemory(startLossRate, endlossRate);
+	}
+	
+	public static void tryDiffTargetFlowNumVsMemory(double startLossRate, double endlossRate) {
+		GlobalSetting.IS_USE_REPLACE_MECHANISM = 1;
+		GlobalSetting.IS_CAPTURE_TARGET_FLOWS = 1;
+		GlobalSetting.SIMULATE_INVERVALS = 5;
+		PacketSampleSetting.BYTE_RATE_INCREASE_RATIO = 2;
+		
+		//only change volume
+		GlobalSetting.TARGET_FLOW_NUM_OVERHEAD_RESULT_FILE_NAME = 
+				"data\\diffTargetFlowNumChangeVolume_VS_BucketsUsageToAchieve1FN.txt";
+		for (double lossRate=startLossRate; lossRate <= endlossRate; lossRate+=0.001) {
+			TargetFlowSetting.TARGET_FLOW_LOST_RATE_THRESHOLD = lossRate;
+			for (int volume = 10000; volume <= 200000; volume+=10000) {
+				TargetFlowSetting.TARGET_FLOW_TOTAL_VOLUME_THRESHOLD = volume;
+				PacketSampleSetting.DEAFULT_BYTE_SAMPLE_RATE = 
+						PacketSampleSetting.OVER_SAMPLING_RATIO	
+						/ TargetFlowSetting.TARGET_FLOW_TOTAL_VOLUME_THRESHOLD;
+				for (double memRatio = 0.01; memRatio <= 10; memRatio+=0.01) {
+					PacketSampleSetting.SHRINK_RATIO = memRatio;
+					PacketSampleSetting.SH_BUCKET_SIZE = (int)(
+							PacketSampleSetting.SHRINK_RATIO * 
+							PacketSampleSetting.DEAFULT_BYTE_SAMPLE_RATE * 
+							PacketSampleSetting.TOTAL_VOLUME_IN_ONE_TIME_INTERVAL);
+					for (int ratio = 1; ratio <= 16; ratio*=2){
+						PacketSampleSetting.BYTE_RATE_INCREASE_RATIO = ratio;
+						runOneExperiment();
+						while (!GlobalData.Instance().AllThreadExit()) {
+							//wait till the current experiment is over.
+							try {
+								Thread.sleep(10);
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+					}
+				}//for
+			}//for
+		}//for
 	}
 	
 	public static void tryDiffTargetFlowNumVSOverhead() {
@@ -64,11 +106,12 @@ public class MainTask {
 	public static void tryDiffNumPktsToSendSignal() {
 		GlobalSetting.MEMORY_REPLACEMENT_RESULT_FILE_NAME = "data\\diffNumPktsToSendSignal_vs_AccuracyFN.txt";
 		GlobalSetting.IS_USE_REPLACE_MECHANISM = 1;
+		GlobalSetting.IS_CAPTURE_TARGET_FLOWS = 1;
 		GlobalSetting.SIMULATE_INVERVALS = 21;
 		PacketSampleSetting.BYTE_RATE_INCREASE_RATIO = 2;
 		
 		double[] memRatioList = {0.1, 0.25, 0.5, 0.75, 1 }; 
-		for (int numPkts = 100000; numPkts <= 1000000; numPkts*=10) {
+		for (int numPkts = 1000; numPkts <= 1000000; numPkts*=10) {
 			GlobalSetting.NUM_PKTS_TO_SIGNAL_THE_NETWORK = numPkts;
 			for (int ithMemRatio = 1; ithMemRatio <= 1; ithMemRatio++) {
 				PacketSampleSetting.SHRINK_RATIO = memRatioList[ithMemRatio];
@@ -129,6 +172,7 @@ public class MainTask {
 	
 	public static void runOneExperiment() {
 		System.out.println("-------------------------NEW EXPERIMENT------------------------");
+		System.out.println("targetFlowLossRate:" + TargetFlowSetting.TARGET_FLOW_LOST_RATE_THRESHOLD);
 		
 		//clear data.
 		ControllerDataInOneInterval.Instance().clearEveryExperiment();

@@ -170,9 +170,11 @@ public class ControllerDataInOneInterval {
 					+ PacketSampleSetting.SH_BUCKET_SIZE + " "
 					+ GlobalSetting.NUM_PKTS_TO_SIGNAL_THE_NETWORK + " "
 					+ PacketSampleSetting.BYTE_RATE_INCREASE_RATIO + " "
-					+ GlobalSetting.IS_CAPTURE_TARGET_FLOWS
+					+ GlobalSetting.IS_CAPTURE_TARGET_FLOWS + " "
+					+ TargetFlowSetting.TARGET_FLOW_LOST_RATE_THRESHOLD + " "
+					+ TargetFlowSetting.TARGET_FLOW_TOTAL_VOLUME_THRESHOLD
 					+ "\r\n");
-			
+			/*
 			writer.write(
 					s1Performance.falseNegative + " "
 					+ s2Performance.falseNegative + " "
@@ -183,7 +185,7 @@ public class ControllerDataInOneInterval {
 					+ s3Performance.accracy + " "
 					+ s4Performance.accracy + " "
 					+"\r\n");
-			
+			*/
 			writer.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
