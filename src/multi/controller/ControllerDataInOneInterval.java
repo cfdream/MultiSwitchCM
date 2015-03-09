@@ -10,6 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import multi.data.FixSizeHashMap;
 import multi.data.FlowKey;
+import multi.host.Host2TargetFlowSet;
 import multi.lib.library;
 import multi.lib.library.AverageDeviation;
 import multi.main.GlobalData;
@@ -94,6 +95,9 @@ public class ControllerDataInOneInterval {
 		groundTruthFlowLostVolumeMap.clear();
 		
 		GlobalData.Instance().controllerIthInterval = ithInterval;
+		
+		//clear Host2TargetFlowSet
+		Host2TargetFlowSet.Instance().clear();
 	}
 	
 	public void clearEveryExperiment() {
