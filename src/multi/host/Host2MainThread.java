@@ -80,8 +80,9 @@ public class Host2MainThread implements Runnable {
 					
 					/*log*/
 					if (numReceivedPkts % 1000000 == 0) {
-						System.out.println("h2"+ " received " + numReceivedPkts + " packets " + 
-								", H2InputSet.size:" + GlobalData.Instance().H2InputSet.size());
+						System.out.println("h2"+ " received " + numReceivedPkts + " packets, " 
+											+ "lossRate:" + 1.0*numLostPkts/numReceivedPkts + ", "	
+											+ "H2InputSet.size:" + GlobalData.Instance().H2InputSet.size());
 					}
 					break;
 				}

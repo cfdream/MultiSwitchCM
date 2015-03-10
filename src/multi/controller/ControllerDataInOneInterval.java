@@ -68,6 +68,9 @@ public class ControllerDataInOneInterval {
 	
 	static ControllerDataInOneInterval singleInstance = new ControllerDataInOneInterval();
 	
+	//debug
+	long srcipMissedInS2 = 0;
+	
 	private ControllerDataInOneInterval() {}
 	
 	public static ControllerDataInOneInterval Instance() {
@@ -98,6 +101,9 @@ public class ControllerDataInOneInterval {
 		
 		//clear Host2TargetFlowSet
 		Host2TargetFlowSet.Instance().clear();
+		
+		//debug 
+		srcipMissedInS2 = 0;
 	}
 	
 	public void clearEveryExperiment() {
@@ -116,10 +122,10 @@ public class ControllerDataInOneInterval {
 	public void analyze() {
 		int numTargetFlows = getNumTargetFlows();
 		
-		SwitchPerformance s1Performance = getOneSwitchPerformance(S1SampleFlowVolumeMap, S1GroundTruthFlowVolumeMap);
-		SwitchPerformance s2Performance = getOneSwitchPerformance(S2SampleFlowVolumeMap, S2GroundTruthFlowVolumeMap);
-		SwitchPerformance s3Performance = getOneSwitchPerformance(S3SampleFlowVolumeMap, S3GroundTruthFlowVolumeMap);
-		SwitchPerformance s4Performance = getOneSwitchPerformance(S4SampleFlowVolumeMap, S4GroundTruthFlowVolumeMap);
+		SwitchPerformance s2Performance = getOneSwitchPerformance(S2SampleFlowVolumeMap, S2GroundTruthFlowVolumeMap, 2);
+		SwitchPerformance s1Performance = getOneSwitchPerformance(S1SampleFlowVolumeMap, S1GroundTruthFlowVolumeMap, 1);
+		SwitchPerformance s3Performance = getOneSwitchPerformance(S3SampleFlowVolumeMap, S3GroundTruthFlowVolumeMap, 3);
+		SwitchPerformance s4Performance = getOneSwitchPerformance(S4SampleFlowVolumeMap, S4GroundTruthFlowVolumeMap, 4);
 		
 		double averageAccuracy = 
 				(s1Performance.accracy+s2Performance.accracy+s3Performance.accracy+s4Performance.accracy)/4;
@@ -229,7 +235,8 @@ public class ControllerDataInOneInterval {
 
 	public SwitchPerformance getOneSwitchPerformance(
 			FixSizeHashMap sampleFlowVolumeMap,
-			HashMap<FlowKey, Long> groundTruthFlowVolumeMap) {
+			HashMap<FlowKey, Long> groundTruthFlowVolumeMap,
+			int ithSwitch) {
 		SwitchPerformance switchPerformance = new SwitchPerformance();
 		
 		int numTargetFlowsItSelf = 0;
@@ -260,24 +267,69 @@ public class ControllerDataInOneInterval {
 			
 			Long sampleVolume = sampleFlowVolumeMap.get(flowKey);
 			if (sampleVolume == null) {
-				/*
+				/*/----start debug
+				if(sampleFlowVolumeMap == S2SampleFlowVolumeMap) {
+					if (srcipMissedInS2 == 0) {
+						//pick one missed flows in switch2
+						srcipMissedInS2 = flowKey.srcip;
+						BufferedWriter writer;
+						try {
+							writer = new BufferedWriter(new FileWriter(
+									GlobalSetting.TARGET_FLOW_NUM_OVERHEAD_RESULT_FILE_NAME, true));
+							writer.write(
+									"switch:" + ithSwitch + " "
+									+ "miss srcip:" + flowKey.srcip + " "
+									+ "volume through the switch:" + groundTruthVolume
+									+"\r\n");
+							writer.close();
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}		
+					}
+				} else if (srcipMissedInS2 == flowKey.srcip) {
+					BufferedWriter writer;
+					try {
+						writer = new BufferedWriter(new FileWriter(
+								GlobalSetting.TARGET_FLOW_NUM_OVERHEAD_RESULT_FILE_NAME, true));
+						writer.write(
+								"switch:" + ithSwitch + " "
+								+ "miss srcip:" + flowKey.srcip + " "
+								+ "volume through the switch:" + groundTruthVolume
+								+"\r\n");
+						writer.close();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}	
+				}
+				//---end debug*/
+				
+				//the target flow is not captured.
+				continue;
+			} 
+			
+			/*//----debug
+			if (sampleFlowVolumeMap != S2SampleFlowVolumeMap
+					&& srcipMissedInS2 == flowKey.srcip) {
+				//switches rather than s2
 				BufferedWriter writer;
 				try {
 					writer = new BufferedWriter(new FileWriter(
 							GlobalSetting.TARGET_FLOW_NUM_OVERHEAD_RESULT_FILE_NAME, true));
 					writer.write(
-							groundTruthVolume
+							"switch:" + ithSwitch + " "
+							+ "catch srcip:" + flowKey.srcip + " "
+							+ "volume through the switch:" + groundTruthVolume
 							+"\r\n");
 					writer.close();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}		
-				*/		
-				
-				continue;
-			} 
-			
+			}
+			//----end debug*/
+
 			//one sampled target flow
 			numSampledTargetFlows++;
 			
