@@ -38,6 +38,8 @@ public class Switch implements Runnable {
 	Long interval_stime = Long.MIN_VALUE;
 	int seconds = 0;
 	int lines = 0;
+	int numPktsReceived = 0;
+	int numPktsDropped = 0;
 	
 	public Switch(SwitchData switchIntOutData) {
 		this.switchIntOutData = switchIntOutData;
@@ -94,6 +96,7 @@ public class Switch implements Runnable {
 			if (isHeld
 					|| (GlobalSetting.IS_CAPTURE_TARGET_FLOWS == 1
 						&& Host2TargetFlowSet.Instance().isTargetFlow(flow))) {
+						//&& GlobalData.Instance().gTargetFlowMap.containsKey(flow))) {
 				if (GlobalSetting.DEBUG && GlobalSetting.DEBUG_SRCIP == flow.srcip) {
 					System.out.println("srcip:"+ flow.srcip + ", is sampled now");
 				}
@@ -145,11 +148,13 @@ public class Switch implements Runnable {
 		sampledFlowVolumeMap.clear();
 	}
 	
-	public int handleOneIncomingPacket(Packet pkg) {		
+	public int handleOneIncomingPacket(Packet pkg) {
 		//if the packet is dropped, return
 		if (switchIntOutData.switchDropPackets && packetDropConsecutivePackets.drop(pkg)) {
+			numPktsDropped++;
 			return 0;
 		}
+		numPktsReceived++;
 		
 		//record the ground truth at this switch
 		HashMap<FlowKey, Long> groundTruthFlowVolumeMap = groundTruthFlowBuffer.get(flowBufferIdx);
@@ -169,6 +174,11 @@ public class Switch implements Runnable {
 			s1WaitControllerToFinishPreInterval();
 			
 			switchBufferAndNotifyController();
+			
+			//debug
+			System.out.println(switchIntOutData.name + " drop rate:" + 1.0*numPktsDropped/numPktsReceived);
+			numPktsDropped = 0;
+			numPktsReceived = 0;
 		}
 		
 		//sample and hold
