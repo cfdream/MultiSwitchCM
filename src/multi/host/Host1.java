@@ -1,6 +1,6 @@
 package multi.host;
 
-import multi.fileRead.Reader;
+import multi.fileRead.ReaderAndHandle;
 import multi.main.GlobalData;
 import multi.main.GlobalSetting;
 
@@ -8,7 +8,7 @@ public class Host1 implements Runnable {
 	private Thread thread;
 	
 	public void run() {
-		Reader reader = new Reader();
+		ReaderAndHandle reader = new ReaderAndHandle();
 		reader.readTillIthIntervalPackets(
 				GlobalSetting.SIMULATE_INVERVALS,
 				GlobalData.Instance().S1InputQueue,

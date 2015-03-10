@@ -13,6 +13,7 @@ public class Packet {
 	public int destport;
 	public short protocol;
 	public long length; // in bytes
+	public boolean capturedAtH1;
 
 	public Long getLength() {
 		return length;
@@ -27,6 +28,8 @@ public class Packet {
 		this.destport = destport;
 		this.protocol = protocol;
 		this.length = length;
+		
+		capturedAtH1 = false;
 	}
 	
 	public Packet(Packet pkt) {
@@ -37,6 +40,8 @@ public class Packet {
 		this.destport = pkt.destport;
 		this.protocol = pkt.protocol;
 		this.length = pkt.length;
+		
+		capturedAtH1 = false;
 	}
 	
 	public int getIthInterval() {

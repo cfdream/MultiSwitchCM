@@ -10,7 +10,7 @@ import multi.data.Packet;
 import multi.main.GlobalData;
 import multi.main.GlobalSetting;
 
-public class Reader {
+public class ReaderAndHandle {
 	/*
 	 * About experiment data
 	 */
@@ -27,7 +27,7 @@ public class Reader {
 	int fileString;
 	BufferedReader reader;
 
-	public Reader() {
+	public ReaderAndHandle() {
 		super();
 		this.currentUSecond = START_USECOND;
 		this.fileString = MINUTE_STRING_START;
