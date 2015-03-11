@@ -1,7 +1,6 @@
 package multi.main;
 public class GlobalSetting {
-	public static boolean DEBUG = false; // debug model
-	public static boolean DEBUG2 = true; // debug model
+	public static boolean DEBUG = true; // debug model
 	public static Long DEBUG_SRCIP = 2967874518L;
 	
 	public static boolean USE_GROUND_TRUTH_FLOW_VOLUME = true;
