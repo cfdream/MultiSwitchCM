@@ -2,7 +2,6 @@ package multi.host;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
 
 import multi.data.FlowKey;
 import multi.data.Packet;
@@ -10,10 +9,7 @@ import multi.main.GlobalSetting;
 import multi.sampleModel.PacketSampleModel;
 import multi.sampleModel.PacketSampleModelTraditional;
 
-public class Host1SampleAndHold {
-
-	Random rand = new Random(System.currentTimeMillis());
-	
+public class Host1SampleAndHold {	
 	public PacketSampleModel packetSampleModel = new PacketSampleModelTraditional();
 
 	public ArrayList<HashMap<FlowKey, Long>> sampledFlowBuffer = new ArrayList<HashMap<FlowKey, Long>>();
