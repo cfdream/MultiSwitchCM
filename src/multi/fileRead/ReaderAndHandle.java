@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import multi.data.Packet;
+import multi.host.Host1SampleAndHold;
 import multi.main.GlobalData;
 import multi.main.GlobalSetting;
 
@@ -88,7 +89,8 @@ public class ReaderAndHandle {
 	 * @return: -1: error, 0: succ
 	 */
 	public int readTillIthIntervalPackets(int ithInterval,
-			LinkedBlockingQueue<Packet> outputQueue, String hostName) {
+			LinkedBlockingQueue<Packet> outputQueue, 
+			String hostName) {
 		long startUSecond = START_USECOND;
 		long endUSecond = startUSecond + 
 				GlobalSetting.SIMULATE_INVERVALS *
@@ -114,6 +116,15 @@ public class ReaderAndHandle {
 			}
 			if (canExit(hostName)) {
 				break;
+			}
+			
+			//sample and Hold
+			boolean isFlowSampled = false;
+			if (hostName == "h1") {
+				 isFlowSampled = Host1SampleAndHold.Instance().isFLowSampled(packet);
+				 if (isFlowSampled) {
+					packet.capturedAtH1 = true;
+				}
 			}
 			
 			//add the packet into a Queue

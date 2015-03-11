@@ -77,7 +77,37 @@ public class Switch implements Runnable {
 		}
 		ControllerDataInOneInterval.Instance().numSwitchDataReceived++;
 	}
+	
+	/*
+	 * SAMPLE AND HOLD
+	 */
+	public void sampleAndHold(Packet pkg) {
+		FixSizeHashMap sampledFlowVolumeMap = sampledFlowBuffer.get(flowBufferIdx);
+		
+		FlowKey flow = new FlowKey(pkg);
 
+		Long volume = sampledFlowVolumeMap.get(flow);
+		if (null == volume) {
+			// ----packet not sampled yet
+			if (pkg.capturedAtH1){
+				// sample success, start hold the packet
+				if (1 == GlobalSetting.IS_USE_REPLACE_MECHANISM) {
+					sampledFlowVolumeMap.putWithReplaceMechanism(flow, pkg.length);
+				} else {
+					sampledFlowVolumeMap.put(flow, pkg.length);
+				}
+			}
+		} else {
+			// ----packet already sampled, hold it			
+			//flow volume
+			if (1 == GlobalSetting.IS_USE_REPLACE_MECHANISM) {
+				sampledFlowVolumeMap.putWithReplaceMechanism(flow, volume += pkg.length);
+			} else {
+				sampledFlowVolumeMap.put(flow, volume += pkg.length);
+			}
+		}
+	}
+	
 	public void sendDataToControllerAndClearStatus() {
 		//the rest buffer
 		FixSizeHashMap sampledFlowVolumeMap = sampledFlowBuffer.get(1-flowBufferIdx);

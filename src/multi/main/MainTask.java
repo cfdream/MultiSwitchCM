@@ -17,9 +17,10 @@ import multi.switcher.SwitchData;
 
 public class MainTask {
 	public static void main(String[] args) {
-		double startLossRate = 0.02;
-		double endlossRate = 0.03;
-		tryDiffTargetFlowNumVsMemory(startLossRate, endlossRate);
+//		double startLossRate = 0.02;
+//		double endlossRate = 0.03;
+//		tryDiffTargetFlowNumVsMemory(startLossRate, endlossRate);
+		tryDiffNumPktsToSendSignal();
 	}
 	
 	public static void tryDiffTargetFlowNumVsMemory(double startLossRate, double endlossRate) {
@@ -110,10 +111,10 @@ public class MainTask {
 		GlobalSetting.SIMULATE_INVERVALS = 21;
 		PacketSampleSetting.BYTE_RATE_INCREASE_RATIO = 2;
 		
-		double[] memRatioList = {0.1, 0.25, 0.5, 0.75, 1 }; 
+		double[] memRatioList = {0.01, 0.05, 0.1, 0.25, 0.5, 0.75, 1 }; 
 		for (int numPkts = 1000; numPkts <= 1000000; numPkts*=10) {
 			GlobalSetting.NUM_PKTS_TO_SIGNAL_THE_NETWORK = numPkts;
-			for (int ithMemRatio = 1; ithMemRatio <= 1; ithMemRatio++) {
+			for (int ithMemRatio = 0; ithMemRatio < memRatioList.length; ithMemRatio++) {
 				PacketSampleSetting.SHRINK_RATIO = memRatioList[ithMemRatio];
 				PacketSampleSetting.SH_BUCKET_SIZE = (int)(
 						PacketSampleSetting.SHRINK_RATIO * 
@@ -140,7 +141,7 @@ public class MainTask {
 		
 		GlobalSetting.SIMULATE_INVERVALS = 21;
 		
-		double[] memRatioList = {0.1, 0.25, 0.5, 0.75, 1 }; 
+		double[] memRatioList = {0.01, 0.05, 0.1, 0.25, 0.5, 0.75, 1 }; 
 		for (int isUse = 0; isUse <= 1; isUse++) {
 			GlobalSetting.IS_USE_REPLACE_MECHANISM = isUse;
 			for (int isCapture = 0; isCapture <= 1; isCapture++) {
