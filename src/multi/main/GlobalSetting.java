@@ -5,9 +5,9 @@ public class GlobalSetting {
 	public static Long DEBUG_SRCIP = 2967874518L;
 	
 	public static boolean USE_GROUND_TRUTH_FLOW_VOLUME = true;
-	public static String DEBUG_RESULT_FILE_NAME = "data\\intervalResultsExponential.txt";
-	public static String TARGET_FLOW_NUM_OVERHEAD_RESULT_FILE_NAME = "data\\targetFlowNum_vs_Overhead.txt";
-	public static String MEMORY_REPLACEMENT_RESULT_FILE_NAME = "data\\diffMemory_vs_samplehold_replacement.txt";
+	public static String DEBUG_RESULT_FILE_NAME = "data/intervalResultsExponential.txt";
+	public static String TARGET_FLOW_NUM_OVERHEAD_RESULT_FILE_NAME = "data/targetFlowNum_vs_Overhead.txt";
+	public static String MEMORY_REPLACEMENT_RESULT_FILE_NAME = "data/diffMemory_vs_samplehold_replacement.txt";
 
 	/* experiment setup */
 	public static int SECOND_2_USECOND = 1000000;

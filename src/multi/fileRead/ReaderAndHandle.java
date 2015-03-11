@@ -15,7 +15,10 @@ public class ReaderAndHandle {
 	/*
 	 * About experiment data
 	 */
-	public static String FILE_HEADER = "C:\\workspace\\data\\equinix-sanjose.dirA.20120920-";
+	//windows
+	//public static String FILE_HEADER = "C:\\workspace\\data\\equinix-sanjose.dirA.20120920-";
+	//linux
+	public static String FILE_HEADER = "/home/xuemei/data/equinix-sanjose.dirA.20120920-";
 	public static String FILE_TAILER = ".UTC.anon.pcap.csv";
 	public static int MINUTE_STRING_START = 130000;
 	public static int MINUTE_STRING_DELTA = 100; // file of ith minute:
