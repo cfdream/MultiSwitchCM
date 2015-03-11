@@ -105,7 +105,10 @@ public class MainTask {
 	}
 	
 	public static void tryDiffNumPktsToSendSignal() {
-		GlobalSetting.MEMORY_REPLACEMENT_RESULT_FILE_NAME = "data\\diffNumPktsToSendSignal_vs_AccuracyFN.txt";
+		GlobalSetting.MEMORY_REPLACEMENT_RESULT_FILE_NAME = "data\\diffNumPktsToSendSignal_vs_AccuracyFN"
+				+ "_" + TargetFlowSetting.TARGET_FLOW_LOST_RATE_THRESHOLD
+				+ "_" + TargetFlowSetting.TARGET_FLOW_TOTAL_VOLUME_THRESHOLD
+				+ ".txt" ;
 		GlobalSetting.IS_USE_REPLACE_MECHANISM = 1;
 		GlobalSetting.IS_CAPTURE_TARGET_FLOWS = 1;
 		GlobalSetting.SIMULATE_INVERVALS = 21;
@@ -135,13 +138,17 @@ public class MainTask {
 	}
 	
 	public static void tryDiffMemoryDiffByteIncreaseRatio() {
-		GlobalSetting.MEMORY_REPLACEMENT_RESULT_FILE_NAME = "data\\diffMemory_vs_samplehold_replacement.txt";
+		GlobalSetting.MEMORY_REPLACEMENT_RESULT_FILE_NAME = "data\\diffMemory_vs_samplehold_replacement"
+				+ "_" + TargetFlowSetting.TARGET_FLOW_LOST_RATE_THRESHOLD
+				+ "_" + TargetFlowSetting.TARGET_FLOW_TOTAL_VOLUME_THRESHOLD
+				+ ".txt" ;
 		//TODO: this can be calculated from 
 		GlobalSetting.NUM_PKTS_TO_SIGNAL_THE_NETWORK = 100000;		//now setting
 		
 		GlobalSetting.SIMULATE_INVERVALS = 21;
 		
-		double[] memRatioList = {0.01, 0.05, 0.1, 0.25, 0.5, 0.75, 1 }; 
+		//double[] memRatioList = {0.01, 0.05, 0.1, 0.25, 0.5, 0.75, 1 };
+		double[] memRatioList = {0.01, 0.05, 0.1, 0.15, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 1 };
 		for (int isUse = 0; isUse <= 1; isUse++) {
 			GlobalSetting.IS_USE_REPLACE_MECHANISM = isUse;
 			for (int isCapture = 0; isCapture <= 1; isCapture++) {
