@@ -113,9 +113,6 @@ public class GlobalData {
 		} else {
 			gNormalFlowVolumeMap.put(flow, normalVolume + pkg.length);
 		}
-		if (GlobalSetting.DEBUG && GlobalSetting.DEBUG_SRCIP == flow.srcip) {
-			System.out.println("normal pkt-srcip:"+flow.srcip + ", normalVolume:" + gNormalFlowVolumeMap.get(flow));
-		}
 		/* in order to get real loss rate */
 	}
 	
@@ -127,9 +124,6 @@ public class GlobalData {
 			gLostFlowVolumeMap.put(flow, pkg.length);
 		} else {
 			gLostFlowVolumeMap.put(flow, lostVolume + pkg.length);
-		}
-		if (GlobalSetting.DEBUG && GlobalSetting.DEBUG_SRCIP == flow.srcip) {
-			System.out.println("lost pkt-srcip:"+flow.srcip + ", lostVolume:" + gLostFlowVolumeMap.get(flow));
 		}
 		/* in order to get real loss rate */
 	}

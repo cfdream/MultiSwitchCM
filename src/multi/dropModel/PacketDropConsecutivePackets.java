@@ -3,6 +3,8 @@ package multi.dropModel;
 
 import java.util.Random;
 
+import randGenerator.RandomGenerator;
+
 import multi.data.Packet;
 import multi.main.GlobalSetting;
 
@@ -18,6 +20,7 @@ public class PacketDropConsecutivePackets extends PacketDropModel{
 	boolean isIntervalDropped;
 	long ongoingMilliSecond;
 	Random random;
+	RandomGenerator randomGenerator = new RandomGenerator();
 	
 	public PacketDropConsecutivePackets() {
 		super();
@@ -25,10 +28,7 @@ public class PacketDropConsecutivePackets extends PacketDropModel{
 		this.isIntervalDropped = false;
 		ongoingMilliSecond = NOT_START;
 		//TODO: set back;
-		random = new Random(System.currentTimeMillis());
-		if (GlobalSetting.DEBUG){
-			random.setSeed(123456789);
-		}
+		random = new Random(123456);
 	}
 
 	@Override
@@ -43,6 +43,10 @@ public class PacketDropConsecutivePackets extends PacketDropModel{
 			isIntervalRandomed = true;
 			//random to decide whether dropping the interval or not
 			double randNum = random.nextDouble();
+			if (GlobalSetting.DEBUG) {
+				randNum = randomGenerator.nextDouble();	
+			}
+			
 			if (randNum < GlobalSetting.VOLUME_DROP_RATE) {
 				isIntervalDropped = true;
 			}
