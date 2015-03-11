@@ -19,8 +19,11 @@ public class MainTask {
 	public static void main(String[] args) {
 //		double startLossRate = 0.02;
 //		double endlossRate = 0.03;
-//		tryDiffTargetFlowNumVsMemory(startLossRate, endlossRate);
-		tryDiffNumPktsToSendSignal();
+//		tryDiffTargetFlowNumVsMemory(startLossRate, endlossRate);		
+		
+		//tryDiffMemoryDiffByteIncreaseRatio(0.02, 10000);
+		
+		tryDiffNumPktsToSendSignal(0.02, 40000);
 	}
 	
 	public static void tryDiffTargetFlowNumVsMemory(double startLossRate, double endlossRate) {
@@ -104,8 +107,15 @@ public class MainTask {
 		}
 	}
 	
-	public static void tryDiffNumPktsToSendSignal() {
-		GlobalSetting.MEMORY_REPLACEMENT_RESULT_FILE_NAME = "data\\diffNumPktsToSendSignal_vs_AccuracyFN.txt";
+	public static void tryDiffNumPktsToSendSignal(double lossRateThreshold, double volumeThreshold) {
+		//target flow loss rate
+		TargetFlowSetting.TARGET_FLOW_LOST_RATE_THRESHOLD = lossRateThreshold;
+		TargetFlowSetting.TARGET_FLOW_TOTAL_VOLUME_THRESHOLD = volumeThreshold; // only care flows larger than 100k in 30s
+		
+		GlobalSetting.MEMORY_REPLACEMENT_RESULT_FILE_NAME = "data\\diffNumPktsToSendSignal_vs_AccuracyFN"
+				+ "_" + lossRateThreshold
+				+ "_" + volumeThreshold
+				+ ".txt" ;
 		GlobalSetting.IS_USE_REPLACE_MECHANISM = 1;
 		GlobalSetting.IS_CAPTURE_TARGET_FLOWS = 1;
 		GlobalSetting.SIMULATE_INVERVALS = 21;
@@ -134,14 +144,21 @@ public class MainTask {
 		}
 	}
 	
-	public static void tryDiffMemoryDiffByteIncreaseRatio() {
-		GlobalSetting.MEMORY_REPLACEMENT_RESULT_FILE_NAME = "data\\diffMemory_vs_samplehold_replacement.txt";
+	public static void tryDiffMemoryDiffByteIncreaseRatio(double lossRateThreshold, double volumeThreshold) {
+		//target flow loss rate
+		TargetFlowSetting.TARGET_FLOW_LOST_RATE_THRESHOLD = lossRateThreshold;
+		TargetFlowSetting.TARGET_FLOW_TOTAL_VOLUME_THRESHOLD = volumeThreshold; // only care flows larger than 100k in 30s
+		
+		GlobalSetting.MEMORY_REPLACEMENT_RESULT_FILE_NAME = "data\\diffMemory_vs_samplehold_replacement"
+				+ "_" + lossRateThreshold
+				+ "_" + volumeThreshold
+				+ ".txt" ;
 		//TODO: this can be calculated from 
 		GlobalSetting.NUM_PKTS_TO_SIGNAL_THE_NETWORK = 100000;		//now setting
 		
-		GlobalSetting.SIMULATE_INVERVALS = 21;
+		GlobalSetting.SIMULATE_INVERVALS = 31;
 		
-		double[] memRatioList = {0.01, 0.05, 0.1, 0.25, 0.5, 0.75, 1 }; 
+		double[] memRatioList = {0.01, 0.05, 0.1, 0.15, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 1 }; 
 		for (int isUse = 0; isUse <= 1; isUse++) {
 			GlobalSetting.IS_USE_REPLACE_MECHANISM = isUse;
 			for (int isCapture = 0; isCapture <= 1; isCapture++) {

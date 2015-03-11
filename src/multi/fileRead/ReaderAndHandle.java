@@ -15,7 +15,11 @@ public class ReaderAndHandle {
 	/*
 	 * About experiment data
 	 */
+	
+	//windows
 	public static String FILE_HEADER = "C:\\workspace\\data\\equinix-sanjose.dirA.20120920-";
+	//linux
+	//public static String FILE_HEADER = "/home/ubuntu/xuemei/data/equinix-sanjose.dirA.20120920-";
 	public static String FILE_TAILER = ".UTC.anon.pcap.csv";
 	public static int MINUTE_STRING_START = 130000;
 	public static int MINUTE_STRING_DELTA = 100; // file of ith minute:
@@ -51,6 +55,11 @@ public class ReaderAndHandle {
 				File file = new File(filePath);
 				if (file.exists() && !file.isDirectory()) {
 					reader = new BufferedReader(new FileReader(filePath));
+					if (reader == null) {
+						System.out.println(filePath + " open failed");
+					}
+				} else {
+					System.out.println(filePath + " not exists");
 				}
 			} else {
 				// reader is just the exact file
