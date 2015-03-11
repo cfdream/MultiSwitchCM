@@ -13,7 +13,7 @@ public abstract class PacketSampleModel {
 	
 	public PacketSampleModel() {
 		super();
-		random = new Random(123456);
+		random = new Random(System.currentTimeMillis());
 		randomGenerator = new RandomGenerator();
 	}
 	

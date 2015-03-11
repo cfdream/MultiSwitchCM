@@ -28,7 +28,7 @@ public class PacketDropConsecutivePackets extends PacketDropModel{
 		this.isIntervalDropped = false;
 		ongoingMilliSecond = NOT_START;
 		//TODO: set back;
-		random = new Random(123456);
+		random = new Random(System.currentTimeMillis());
 	}
 
 	@Override
