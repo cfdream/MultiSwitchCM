@@ -32,7 +32,7 @@ public class MainTask {
 		
 		//only change volume
 		GlobalSetting.TARGET_FLOW_NUM_OVERHEAD_RESULT_FILE_NAME = 
-				"data\\diffTargetFlowNumChangeVolume_VS_BucketsUsageToAchieve1FN.txt";
+				"data/diffTargetFlowNumChangeVolume_VS_BucketsUsageToAchieve1FN.txt";
 		for (double lossRate=startLossRate; lossRate <= endlossRate; lossRate+=0.001) {
 			TargetFlowSetting.TARGET_FLOW_LOST_RATE_THRESHOLD = lossRate;
 			for (int volume = 10000; volume <= 200000; volume+=10000) {
@@ -71,7 +71,7 @@ public class MainTask {
 		
 		//only change loss rate
 		GlobalSetting.TARGET_FLOW_NUM_OVERHEAD_RESULT_FILE_NAME = 
-				"data\\diffTargetFlowNumChangeLossRate_VS_Overhead.txt";
+				"data/diffTargetFlowNumChangeLossRate_VS_Overhead.txt";
 		for (double lossRate=0.002; lossRate <= 0.04; lossRate+=0.002) {
 			TargetFlowSetting.TARGET_FLOW_LOST_RATE_THRESHOLD = lossRate;
 			runOneExperiment();
@@ -89,7 +89,7 @@ public class MainTask {
 		//only change volume
 		TargetFlowSetting.TARGET_FLOW_LOST_RATE_THRESHOLD = 0.005;
 		GlobalSetting.TARGET_FLOW_NUM_OVERHEAD_RESULT_FILE_NAME = 
-				"data\\diffTargetFlowNumChangeVolume_VS_Overhead.txt";
+				"data/diffTargetFlowNumChangeVolume_VS_Overhead.txt";
 		for (int volume = 10000; volume <= 200000; volume+=10000) {
 			TargetFlowSetting.TARGET_FLOW_TOTAL_VOLUME_THRESHOLD = volume;
 			runOneExperiment();
@@ -106,7 +106,7 @@ public class MainTask {
 	}
 	
 	public static void tryDiffNumPktsToSendSignal() {
-		GlobalSetting.MEMORY_REPLACEMENT_RESULT_FILE_NAME = "data\\diffNumPktsToSendSignal_vs_AccuracyFN"
+		GlobalSetting.MEMORY_REPLACEMENT_RESULT_FILE_NAME = "data/diffNumPktsToSendSignal_vs_AccuracyFN"
 				+ "_" + TargetFlowSetting.TARGET_FLOW_LOST_RATE_THRESHOLD
 				+ "_" + TargetFlowSetting.TARGET_FLOW_TOTAL_VOLUME_THRESHOLD
 				+ ".txt" ;
@@ -139,17 +139,19 @@ public class MainTask {
 	}
 	
 	public static void tryDiffMemoryDiffByteIncreaseRatio() {
-		GlobalSetting.MEMORY_REPLACEMENT_RESULT_FILE_NAME = "data\\diffMemory_vs_samplehold_replacement"
+		GlobalSetting.MEMORY_REPLACEMENT_RESULT_FILE_NAME = "data/diffMemory_vs_samplehold_replacement"
 				+ "_" + TargetFlowSetting.TARGET_FLOW_LOST_RATE_THRESHOLD
 				+ "_" + TargetFlowSetting.TARGET_FLOW_TOTAL_VOLUME_THRESHOLD
 				+ ".txt" ;
 		//TODO: this can be calculated from 
 		GlobalSetting.NUM_PKTS_TO_SIGNAL_THE_NETWORK = 100000;		//now setting
+		PacketSampleSetting.SAMPLE_AT_SWITCH_OR_HOST = 2;
 		
 		GlobalSetting.SIMULATE_INVERVALS = 21;
 		
 		//double[] memRatioList = {0.01, 0.05, 0.1, 0.25, 0.5, 0.75, 1 };
-		double[] memRatioList = {0.01, 0.05, 0.1, 0.15, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 1 };
+		//double[] memRatioList = {0.01, 0.05, 0.1, 0.15, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 1 };
+		double[] memRatioList = {0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 1 };
 		for (int isUse = 1; isUse <= 1; isUse++) {
 			GlobalSetting.IS_USE_REPLACE_MECHANISM = isUse;
 			for (int isCapture = 1; isCapture <= 1; isCapture++) {
@@ -161,7 +163,7 @@ public class MainTask {
 							PacketSampleSetting.SHRINK_RATIO * 
 							PacketSampleSetting.DEAFULT_BYTE_SAMPLE_RATE * 
 							PacketSampleSetting.TOTAL_VOLUME_IN_ONE_TIME_INTERVAL);
-					for (int ratio = 2; ratio <= 8; ratio*=2){
+					for (int ratio = 2; ratio <= 2; ratio*=2){
 						PacketSampleSetting.BYTE_RATE_INCREASE_RATIO = ratio;
 						runOneExperiment();
 						while (!GlobalData.Instance().AllThreadExit()) {

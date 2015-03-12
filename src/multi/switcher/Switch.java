@@ -41,6 +41,7 @@ public class Switch implements Runnable {
 	int lines = 0;
 	int numPktsReceived = 0;
 	int numPktsDropped = 0;
+	long preMicorSec = Long.MIN_VALUE;
 	
 	public Switch(SwitchData switchIntOutData) {
 		this.switchIntOutData = switchIntOutData;
@@ -185,6 +186,9 @@ public class Switch implements Runnable {
 		//if the packet is dropped, return
 		if (switchIntOutData.switchDropPackets && packetDropConsecutivePackets.drop(pkg)) {
 			numPktsDropped++;
+			if (numPktsDropped == 1) {
+				System.out.println("1st dropped pkt at S2:" + pkg.srcip);
+			}
 			return 0;
 		}
 		numPktsReceived++;
@@ -209,7 +213,9 @@ public class Switch implements Runnable {
 			switchBufferAndNotifyController();
 			
 			//debug
-			System.out.println(switchIntOutData.name + " drop rate:" + 1.0*numPktsDropped/numPktsReceived);
+			System.out.println(switchIntOutData.name 
+					+ " #pkts dropped:" + numPktsDropped
+					+ " drop rate:" + 1.0*numPktsDropped/numPktsReceived);
 			numPktsDropped = 0;
 			numPktsReceived = 0;
 		}
@@ -280,10 +286,40 @@ public class Switch implements Runnable {
 				break;
 			}
 			
+			/*
+			 * The packets are already in order by analysis.
+			pkg = checkS4InsertPktIntoPriorityQueueAndReturnValidPkt(pkg);
+			if (pkg == null) {
+				//this is s4, and the queue has not accumulated enough pkts yet.
+				//wait enough pkts to make sure the order is ok.
+				continue;
+			}
+			*/
+			
+			if (pkg.microsec < preMicorSec) {
+				System.out.println("packet timestamp disorder:" + pkg.microsec);
+				preMicorSec = pkg.microsec;
+			}
+			
 			//handle the packet
 			handleOneIncomingPacket(pkg);
 		}
 		System.out.println(switchIntOutData.name + " exit");
+	}
+	
+	public Packet checkS4InsertPktIntoPriorityQueueAndReturnValidPkt(Packet pkg) {
+		if (switchIntOutData.name != "s4") {
+			return pkg;
+		}
+		
+		//insert pkt into PriorityQueue.
+		switchIntOutData.s4PriorityBlockingQueue.offer(pkg);
+		if (switchIntOutData.s4PriorityBlockingQueue.size() < SwitchData.S4_PRIORITY_QUEUE_WATI_SIZE) {
+			return null;
+		}
+		Packet nextPkt = switchIntOutData.s4PriorityBlockingQueue.poll();
+		//System.out.println(pkg.microsec);
+		return nextPkt;
 	}
 
 	public void start()

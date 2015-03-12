@@ -1,7 +1,10 @@
 package multi.lib;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
+
+import multi.data.Packet;
 
 public class library {
 	public static class AverageDeviation {
@@ -53,4 +56,11 @@ public class library {
 		AverageDeviation averageDeviation = new AverageDeviation(avgValue, standardDeviation);
 		return averageDeviation;
 	} 
+	
+	public static class PQSortPkts implements Comparator<Packet> {
+		 
+		public int compare(Packet one, Packet two) {
+			return (int) (one.microsec - two.microsec);
+		}
+	}
 }

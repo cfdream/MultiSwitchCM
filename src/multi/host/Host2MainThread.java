@@ -42,6 +42,9 @@ public class Host2MainThread implements Runnable {
 			if (pkg.getIthInterval() > ithInterval) {
 				ithInterval = pkg.getIthInterval();
 				System.out.println("Host2MainThread, " + ithInterval + " interval");
+				System.out.println("h2"+ " #pkts dropped: " + numLostPkts
+						+ " lossRate:" + 1.0*numLostPkts/numReceivedPkts + ", "	
+						+ ", H2InputSet.size:" + GlobalData.Instance().H2InputSet.size());
 				
 				GlobalData.Instance().switchFlowMapBuffers();
 				
@@ -57,6 +60,9 @@ public class Host2MainThread implements Runnable {
 				
 				GlobalData.Instance().gTargetFlowMap.clear();
 				numSingalFlowsReportedToNetwork = 0;
+				
+				numLostPkts = 0;
+				numReceivedPkts = 0;
 			}
 			
 			//pkg is from ground truth, check whether it is already received
@@ -98,6 +104,12 @@ public class Host2MainThread implements Runnable {
 					if (numLostPkts % 1000000 == 0) {
 						System.out.println("h2"+ " lost " + numLostPkts + " packets"+ 
 								", H2InputSet.size:" + GlobalData.Instance().H2InputSet.size());
+					}
+					if (numLostPkts == 1) {
+						System.out.println("1st dropped pkt at H2:"
+								+ pkg.microsec + ","
+								+ pkg.srcip+","+pkg.destip
+								+","+pkg.srcport+","+pkg.destport);
 					}
 					break;
 				}
