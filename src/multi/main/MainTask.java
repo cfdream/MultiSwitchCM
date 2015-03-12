@@ -21,7 +21,7 @@ public class MainTask {
 //		double endlossRate = 0.03;
 //		tryDiffTargetFlowNumVsMemory(startLossRate, endlossRate);
 		
-		tryDiffMemoryDiffByteIncreaseRatio();
+		tryDiffNumPktsToSendSignal();
 	}
 	
 	public static void tryDiffTargetFlowNumVsMemory(double startLossRate, double endlossRate) {
@@ -115,7 +115,8 @@ public class MainTask {
 		GlobalSetting.SIMULATE_INVERVALS = 21;
 		PacketSampleSetting.BYTE_RATE_INCREASE_RATIO = 2;
 		
-		double[] memRatioList = {0.01, 0.05, 0.1, 0.25, 0.5, 0.75, 1 }; 
+		//double[] memRatioList = {0.01, 0.05, 0.1, 0.25, 0.5, 0.75, 1 };
+		double[] memRatioList = {0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 1 };
 		for (int numPkts = 1000; numPkts <= 1000000; numPkts*=10) {
 			GlobalSetting.NUM_PKTS_TO_SIGNAL_THE_NETWORK = numPkts;
 			for (int ithMemRatio = 0; ithMemRatio < memRatioList.length; ithMemRatio++) {
@@ -147,7 +148,7 @@ public class MainTask {
 		GlobalSetting.NUM_PKTS_TO_SIGNAL_THE_NETWORK = 100000;		//now setting
 		PacketSampleSetting.SAMPLE_AT_SWITCH_OR_HOST = 2;
 		
-		GlobalSetting.SIMULATE_INVERVALS = 3;
+		GlobalSetting.SIMULATE_INVERVALS = 21;
 		
 		//double[] memRatioList = {0.01, 0.05, 0.1, 0.25, 0.5, 0.75, 1 };
 		//double[] memRatioList = {0.01, 0.05, 0.1, 0.15, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 1 };
