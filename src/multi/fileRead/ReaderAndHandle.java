@@ -30,6 +30,8 @@ public class ReaderAndHandle {
 	long currentUSecond; // data in currentSecond at reader starts at reader
 	int fileString;
 	BufferedReader reader;
+	
+	Host1SampleAndHold host1SampleAndHold = new Host1SampleAndHold();
 
 	public ReaderAndHandle() {
 		super();
@@ -124,7 +126,7 @@ public class ReaderAndHandle {
 			//sample and Hold
 			boolean isFlowSampled = false;
 			if (hostName == "h1") {
-				 isFlowSampled = Host1SampleAndHold.Instance().isFLowSampled(packet);
+				 isFlowSampled = host1SampleAndHold.isFLowSampled(packet);
 				 if (isFlowSampled) {
 					packet.capturedAtH1 = true;
 				}

@@ -1,8 +1,8 @@
 package multi.host;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
+import multi.data.FixSizeHashMap;
 import multi.data.FlowKey;
 import multi.data.Packet;
 import multi.main.GlobalSetting;
@@ -12,20 +12,14 @@ import multi.sampleModel.PacketSampleModelTraditional;
 public class Host1SampleAndHold {	
 	public PacketSampleModel packetSampleModel = new PacketSampleModelTraditional();
 
-	public ArrayList<HashMap<FlowKey, Long>> sampledFlowBuffer = new ArrayList<HashMap<FlowKey, Long>>();
+	public ArrayList<FixSizeHashMap> sampledFlowBuffer = new ArrayList<FixSizeHashMap>();
 	public int flowBufferIdx = 0;
 	
 	private int ithInterval;
 	
-	private static Host1SampleAndHold singleInstanceAndHold = new Host1SampleAndHold();
-	
-	public static Host1SampleAndHold Instance() {
-		return singleInstanceAndHold;
-	}
-	
-	private Host1SampleAndHold() {
-		sampledFlowBuffer.add(new HashMap<FlowKey, Long>());
-		sampledFlowBuffer.add(new HashMap<FlowKey, Long>());
+	public Host1SampleAndHold() {
+		sampledFlowBuffer.add(new FixSizeHashMap());
+		sampledFlowBuffer.add(new FixSizeHashMap());
 		
 		ithInterval = GlobalSetting.FIRST_INTERVAL;
 	}
@@ -50,7 +44,7 @@ public class Host1SampleAndHold {
 		}
 		
 		
-		HashMap<FlowKey, Long> sampledFlowVolumeMap = sampledFlowBuffer.get(flowBufferIdx);
+		FixSizeHashMap sampledFlowVolumeMap = sampledFlowBuffer.get(flowBufferIdx);
 		
 		FlowKey flow = new FlowKey(pkg);
 
@@ -59,14 +53,22 @@ public class Host1SampleAndHold {
 			// ----packet not sampled yet
 			boolean isHeld = packetSampleModel.isSampled(pkg);
 			if (isHeld) {
-				sampledFlowVolumeMap.put(flow, pkg.length);
+				if (1 == GlobalSetting.IS_USE_REPLACE_MECHANISM) {
+					sampledFlowVolumeMap.putWithReplaceMechanism(flow, pkg.length);
+				} else {
+					sampledFlowVolumeMap.put(flow, pkg.length);
+				}
 			}
 		} else {
 			// ----packet already sampled, hold it			
 			//flow volume
-			sampledFlowVolumeMap.put(flow, volume += pkg.length);
+			if (1 == GlobalSetting.IS_USE_REPLACE_MECHANISM) {
+				sampledFlowVolumeMap.putWithReplaceMechanism(flow, volume += pkg.length);
+			} else {
+				sampledFlowVolumeMap.put(flow, volume += pkg.length);
+			}
 		}
 		
-		return sampledFlowVolumeMap.containsKey(flow);
+		return sampledFlowVolumeMap.get(flow) != null;
 	}
 }
