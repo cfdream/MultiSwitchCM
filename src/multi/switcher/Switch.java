@@ -16,6 +16,7 @@ import multi.main.GlobalSetting;
 import multi.main.TargetFlowSetting;
 import multi.sampleModel.PacketSampleModel;
 import multi.sampleModel.PacketSampleModelTraditional;
+import multi.sampleModel.PacketSampleSetting;
 
 public class Switch implements Runnable {
 	private Thread thread;
@@ -24,6 +25,9 @@ public class Switch implements Runnable {
 	int ithInterval = GlobalSetting.FIRST_INTERVAL;
 	
 	PacketDropConsecutivePackets packetDropConsecutivePackets = new PacketDropConsecutivePackets();
+	Random rand = new Random(System.currentTimeMillis());
+	
+	public PacketSampleModel packetSampleModel = new PacketSampleModelTraditional();
 	
 	public ArrayList<FixSizeHashMap> sampledFlowBuffer = new ArrayList<FixSizeHashMap>();
 	public ArrayList<HashMap<FlowKey, Long>> groundTruthFlowBuffer = new ArrayList<HashMap<FlowKey, Long>>();
@@ -81,7 +85,45 @@ public class Switch implements Runnable {
 	/*
 	 * SAMPLE AND HOLD
 	 */
-	public void sampleAndHold(Packet pkg) {
+	public void sampleAtSwitchAtHold(Packet pkg) {
+		FixSizeHashMap sampledFlowVolumeMap = sampledFlowBuffer.get(flowBufferIdx);
+		
+		FlowKey flow = new FlowKey(pkg);
+
+		Long volume = sampledFlowVolumeMap.get(flow);
+		if (null == volume) {
+			// ----packet not sampled yet
+			boolean isHeld = packetSampleModel.isSampled(pkg);
+			if (isHeld
+					|| (GlobalSetting.IS_CAPTURE_TARGET_FLOWS == 1
+						&& Host2TargetFlowSet.Instance().isTargetFlow(flow))) {
+						//&& GlobalData.Instance().gTargetFlowMap.containsKey(flow))) {
+				if (GlobalSetting.DEBUG && GlobalSetting.DEBUG_SRCIP == flow.srcip) {
+					System.out.println("srcip:"+ flow.srcip + ", is sampled now");
+				}
+				
+				// sample success, start hold the packet
+				if (1 == GlobalSetting.IS_USE_REPLACE_MECHANISM) {
+					sampledFlowVolumeMap.putWithReplaceMechanism(flow, pkg.length);
+				} else {
+					sampledFlowVolumeMap.put(flow, pkg.length);
+				}
+			}
+		} else {
+			// ----packet already sampled, hold it			
+			//flow volume
+			if (1 == GlobalSetting.IS_USE_REPLACE_MECHANISM) {
+				sampledFlowVolumeMap.putWithReplaceMechanism(flow, volume += pkg.length);
+			} else {
+				sampledFlowVolumeMap.put(flow, volume += pkg.length);
+			}
+		}
+	}
+	
+	/*
+	 * SAMPLE AND HOLD
+	 */
+	public void sampleAtHostAndHold(Packet pkg) {
 		FixSizeHashMap sampledFlowVolumeMap = sampledFlowBuffer.get(flowBufferIdx);
 		
 		FlowKey flow = new FlowKey(pkg);
@@ -171,7 +213,14 @@ public class Switch implements Runnable {
 		}
 		
 		//sample and hold
-		sampleAndHold(pkg);
+		if (PacketSampleSetting.SAMPLE_AT_SWITCH_OR_HOST == 1) {
+			//sample at switch
+			sampleAtSwitchAtHold(pkg);
+			
+		} else if (PacketSampleSetting.SAMPLE_AT_SWITCH_OR_HOST == 2) {
+			//sample at host
+			sampleAtHostAndHold(pkg);
+		}
 
 		//output the packet to outQueueS
 		try {
