@@ -180,7 +180,7 @@ public class ControllerDataInOneInterval {
 					+ TargetFlowSetting.TARGET_FLOW_LOST_RATE_THRESHOLD + " "
 					+ TargetFlowSetting.TARGET_FLOW_TOTAL_VOLUME_THRESHOLD
 					+ "\r\n");
-			/*
+			
 			writer.write(
 					s1Performance.falseNegative + " "
 					+ s2Performance.falseNegative + " "
@@ -190,8 +190,12 @@ public class ControllerDataInOneInterval {
 					+ s2Performance.accracy + " "
 					+ s3Performance.accracy + " "
 					+ s4Performance.accracy + " "
+					+ s1Performance.numTargetFlowCaptured + " "
+					+ s2Performance.numTargetFlowCaptured + " "
+					+ s3Performance.numTargetFlowCaptured + " "
+					+ s4Performance.numTargetFlowCaptured
 					+"\r\n");
-			*/
+			
 			writer.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -219,7 +223,8 @@ public class ControllerDataInOneInterval {
 						 + PacketSampleSetting.BYTE_RATE_INCREASE_RATIO + " "
 						 + (int)averageTargetFlowAverageDeviation.avgValue + " "
 						 + averageTargetFlowAverageDeviation.deviation+ " "
-						 + GlobalSetting.IS_CAPTURE_TARGET_FLOWS
+						 + GlobalSetting.IS_CAPTURE_TARGET_FLOWS + " "
+						 + PacketSampleSetting.SAMPLE_AT_SWITCH_OR_HOST
 						 + "\r\n");
 				 writer.close();
 			 } catch (IOException e) {

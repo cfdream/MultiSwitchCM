@@ -152,12 +152,12 @@ public class MainTask {
 		//double[] memRatioList = {0.01, 0.05, 0.1, 0.25, 0.5, 0.75, 1 };
 		//double[] memRatioList = {0.01, 0.05, 0.1, 0.15, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 1 };
 		double[] memRatioList = {0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 1 };
-		for (int isUse = 1; isUse <= 1; isUse++) {
+		for (int isUse = 0; isUse <= 1; isUse++) {
 			GlobalSetting.IS_USE_REPLACE_MECHANISM = isUse;
-			for (int isCapture = 1; isCapture <= 1; isCapture++) {
+			for (int isCapture = 0; isCapture <= 1; isCapture++) {
 				GlobalSetting.IS_CAPTURE_TARGET_FLOWS = isCapture;
 				//SH, SH+replace, SH+select, SH+replace+select
-				for (int ithMemRatio = memRatioList.length-1; ithMemRatio < memRatioList.length; ithMemRatio++) {
+				for (int ithMemRatio = 0; ithMemRatio < memRatioList.length; ithMemRatio++) {
 					PacketSampleSetting.SHRINK_RATIO = memRatioList[ithMemRatio];
 					PacketSampleSetting.SH_BUCKET_SIZE = (int)(
 							PacketSampleSetting.SHRINK_RATIO * 
