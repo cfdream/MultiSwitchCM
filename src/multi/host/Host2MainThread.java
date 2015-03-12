@@ -69,9 +69,23 @@ public class Host2MainThread implements Runnable {
 			int waitTimes = 0;
 			while (true) {
 				FlowKey flowKey = new FlowKey(pkg);
-				if (GlobalData.Instance().H2InputSet.containsKey(pkg)) {
-					//remove the pkg from the set
-					GlobalData.Instance().H2InputSet.remove(pkg);
+				GlobalData.Instance().h2InputSetMutex.lock();
+				Integer cnt = GlobalData.Instance().H2InputSet.get(pkg);
+				if (cnt == null) {
+					GlobalData.Instance().h2InputSetMutex.unlock();
+				}
+				if (cnt != null) {
+					//cnt--, has concurrency problem here.
+					if (cnt <= 0) {
+						System.out.println(flowKey.srcip);
+					}
+					if(cnt-1 == 0) {
+						GlobalData.Instance().H2InputSet.remove(pkg);
+					} else {
+						GlobalData.Instance().H2InputSet.put(pkg, cnt-1);
+					}
+					GlobalData.Instance().h2InputSetMutex.unlock();
+					
 					//the pkg is already received
 					//update normal volume for the flow
 					GlobalData.Instance().insertIntoNormalFlowVolumeMap(flowKey, pkg);

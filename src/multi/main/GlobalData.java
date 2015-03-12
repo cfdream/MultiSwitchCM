@@ -2,10 +2,11 @@ package multi.main;
 
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import multi.data.FlowKey;
 import multi.data.Packet;
@@ -26,6 +27,7 @@ public class GlobalData {
 	public LinkedBlockingQueue<Packet> S4InputQueue = new LinkedBlockingQueue<Packet>(10000); // 10M
 	public ConcurrentMap<Packet, Integer> H2InputSet = new ConcurrentHashMap<Packet, Integer>(); // 10M
 	public LinkedBlockingQueue<Packet> H2TruthQueue = new LinkedBlockingQueue<Packet>(10000); // 10M
+	public Lock h2InputSetMutex = new ReentrantLock(true);
 	public long currentMaxPktTimestamp;
 	
 	//signal for all threads.

@@ -242,7 +242,15 @@ public class Switch implements Runnable {
 				}
 			} else {
 				//switch 4
-				switchIntOutData.H2InputSet.put(pkg, 1);
+				GlobalData.Instance().h2InputSetMutex.lock();
+				Integer cnt = switchIntOutData.H2InputSet.get(pkg);
+				if (cnt == null) {
+					switchIntOutData.H2InputSet.put(pkg, 1);	
+				} else {
+					switchIntOutData.H2InputSet.put(pkg, cnt + 1);
+				}
+				GlobalData.Instance().h2InputSetMutex.unlock();
+				
 				//update currentMaxPktTimestamp, will be used in Host2MainThread
 				if (pkg.microsec > GlobalData.Instance().currentMaxPktTimestamp) {
 					GlobalData.Instance().currentMaxPktTimestamp = pkg.microsec;
