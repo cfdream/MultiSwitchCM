@@ -1,9 +1,5 @@
 package multi.sampleModel;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-
 import multi.data.Packet;
 import multi.main.GlobalSetting;
 

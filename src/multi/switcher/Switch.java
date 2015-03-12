@@ -131,7 +131,9 @@ public class Switch implements Runnable {
 		Long volume = sampledFlowVolumeMap.get(flow);
 		if (null == volume) {
 			// ----packet not sampled yet
-			if (pkg.capturedAtH1){
+			if (pkg.capturedAtH1
+					|| (GlobalSetting.IS_CAPTURE_TARGET_FLOWS == 1
+					&& Host2TargetFlowSet.Instance().isTargetFlow(flow))) {
 				// sample success, start hold the packet
 				if (1 == GlobalSetting.IS_USE_REPLACE_MECHANISM) {
 					sampledFlowVolumeMap.putWithReplaceMechanism(flow, pkg.length);

@@ -11,7 +11,7 @@ public class PacketSampleSetting {
 			* GlobalSetting.INTERVAL_SECONDS;
 	public static int OVER_SAMPLING_RATIO = 4;
 	
-	public static int SAMPLE_AT_SWITCH_OR_HOST = 1;	//1: switch; 2:host
+	public static int SAMPLE_AT_SWITCH_OR_HOST = 2;	//1: switch; 2:host
 	
 	//initial FLOW sampling rate
 	
